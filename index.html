@@ -1,1 +1,353 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><script>document.documentElement.dataset.theme=localStorage.getItem('theme')||((matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light')</script><title>Portofolio</title><meta name="description" content="Portofolio pribadi dan proyek digital."><meta property="og:type" content="website"><meta property="og:image" content="https://raka-pratama.vercel.app/assets/img/og-image.png"><meta property="og:url" content="https://raka-pratama.vercel.app/"><link rel="stylesheet" href="assets/css/style.css"></head><body><a class="skip" href="#main">Lewati ke konten</a><header class="nav"><div class="container nav-in"><a class="brand" id="brand" href="#">Portfolio</a><nav id="nav-links" class="nav-links" aria-label="Navigasi utama"></nav><div><button class="icon-btn" id="theme" aria-label="Ganti tema" aria-pressed="false">◐</button><button class="icon-btn menu" id="menu" aria-label="Buka menu" aria-expanded="false">☰</button></div></div></header><main id="main"><section class="hero container" id="home"><div><p class="eyebrow" id="hero-role"></p><h1 id="hero-name"></h1><p class="tagline" id="tagline"></p><p class="location" id="location"></p><div class="actions"><a class="button" href="#projects">Lihat Proyek</a><a class="button alt" href="assets/cv.pdf" download>Download CV</a></div></div><div class="avatar" id="profile-link"><span id="initials"></span></div></section><section class="section container reveal" id="about"><div class="section-head"><p class="eyebrow">Tentang saya</p><h2>Merancang dengan tujuan.</h2><p class="muted" id="about-text"></p></div><div class="stats" id="stats"></div></section><section class="section container" id="skills"><div class="section-head"><p class="eyebrow">Keahlian</p><h2>Tools yang saya gunakan.</h2></div><div class="skills-grid" id="skills-grid"></div></section><section class="section container" id="projects"><div class="section-head"><p class="eyebrow">Karya terpilih</p><h2>Proyek yang pernah dibuat.</h2></div><div class="filters" id="filters"></div><div class="project-grid" id="project-grid"></div><p class="empty" id="empty" hidden>Tidak ada proyek pada kategori ini.</p></section><section class="section container" id="journey"><div class="experience-grid"><div><p class="eyebrow">Pengalaman</p><div class="timeline" id="experience"></div></div><div><p class="eyebrow">Pendidikan</p><div class="timeline" id="education"></div></div></div></section><section class="section container" id="certificates"><div class="section-head"><p class="eyebrow">Sertifikat</p><h2>Pembelajaran berkelanjutan.</h2></div><div class="cert-grid" id="cert-grid"></div></section><section class="section container" id="contact"><div class="contact-grid"><div><p class="eyebrow">Kontak</p><h2>Mari membuat sesuatu.</h2><p class="muted">Punya ide atau ingin berkolaborasi? Kirim pesan dan saya akan segera menghubungi Anda.</p><div class="actions"><a class="button" id="wa-link" target="_blank" rel="noopener">WhatsApp</a><a class="button alt" id="email-link">Email</a></div></div><form class="form" id="contact-form"><label>Nama<input name="name" required autocomplete="name"></label><label>Email<input name="email" type="email" required autocomplete="email"></label><label>Pesan<textarea name="message" required></textarea></label><p class="error" id="form-error" role="alert"></p><button type="submit">Kirim pesan</button></form></div></section></main><footer class="footer"><div class="container"><span>© <span id="year"></span> <span id="brand-footer">Portfolio</span></span> · <span id="footer-socials"></span></div></footer><script src="assets/js/data.js"></script><script src="assets/js/app.js"></script></body></html>
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <!-- Tema diterapkan sebelum paint agar tidak ada kedipan putih -->
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('theme'); } catch (e) { }
+      document.documentElement.dataset.theme =
+        t || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    })();
+  </script>
+
+  <title>Al Fajrin Insani — Software Engineer</title>
+  <meta name="description" content="Portofolio Al Fajrin Insani, lulusan Teknik Komputer Universitas Negeri Makassar. Aplikasi web, mobile, dan sistem IoT untuk industri kopi dan pengelolaan data.">
+  <meta name="author" content="Al Fajrin Insani">
+  <meta name="theme-color" content="#0a0712" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f6f4fd" media="(prefers-color-scheme: light)">
+  <!-- TODO: ganti GANTI-DOMAIN.vercel.app di file ini, robots.txt, sitemap.xml, dan data.js -->
+  <link rel="canonical" href="https://GANTI-DOMAIN.vercel.app/">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/og-image.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Al Fajrin Insani">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Al Fajrin Insani — Software Engineer">
+  <meta property="og:description" content="Portofolio Al Fajrin Insani, lulusan Teknik Komputer Universitas Negeri Makassar. Aplikasi web, mobile, dan sistem IoT untuk industri kopi dan pengelolaan data.">
+  <meta property="og:url" content="https://GANTI-DOMAIN.vercel.app/">
+  <meta property="og:image" content="https://GANTI-DOMAIN.vercel.app/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Portofolio Al Fajrin Insani">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Al Fajrin Insani — Software Engineer">
+  <meta name="twitter:description" content="Aplikasi web, mobile, dan sistem IoT untuk industri kopi dan pengelolaan data.">
+  <meta name="twitter:image" content="https://GANTI-DOMAIN.vercel.app/assets/img/og-image.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <script type="application/ld+json" id="ld-person">{}</script>
+</head>
+
+<body>
+  <a class="skip" href="#main">Lewati ke konten</a>
+
+  <!-- ============ Navigasi ============ -->
+  <header class="nav" id="nav">
+    <div class="container nav-in">
+      <a class="brand" href="#home">
+        <span class="brand-mark" id="brand-mark" aria-hidden="true"></span>
+        <span id="brand">Portofolio</span>
+      </a>
+
+      <nav id="nav-links" class="nav-links" aria-label="Navigasi utama"></nav>
+
+      <div class="nav-tools">
+        <button class="icon-btn" id="theme" type="button" aria-label="Ganti tema" aria-pressed="false">
+          <span id="theme-icon" aria-hidden="true">◐</span>
+        </button>
+        <button class="icon-btn menu" id="menu" type="button" aria-label="Buka menu" aria-expanded="false" aria-controls="nav-links">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============ Hero ============ -->
+    <section class="hero container" id="home">
+      <div class="hero-grid">
+        <div>
+          <p class="badge" id="status-badge" hidden><span class="dot" aria-hidden="true"></span><span id="status-text"></span></p>
+          <h1><span id="hero-hello">Hai, saya</span> <span class="grad" id="hero-name"></span></h1>
+          <p class="eyebrow" id="hero-role"></p>
+          <p class="tagline" id="tagline"></p>
+          <div class="hero-meta">
+            <span id="meta-location"></span>
+            <span id="meta-timezone"></span>
+            <span id="meta-projects"></span>
+          </div>
+          <div class="actions">
+            <a class="button" href="#projects">Lihat proyek</a>
+            <a class="button alt" id="cv-link" download hidden>Unduh CV</a>
+            <a class="button alt" id="hero-contact" href="#contact">Hubungi saya</a>
+          </div>
+        </div>
+
+        <div class="portrait" id="portrait">
+          <div class="portrait-glow" aria-hidden="true"></div>
+          <div class="portrait-frame" id="portrait-frame">
+            <span class="initials" id="initials" aria-hidden="true"></span>
+          </div>
+          <div class="portrait-chip" id="portrait-chip" hidden>
+            <strong id="chip-value"></strong>
+            <small id="chip-label"></small>
+          </div>
+        </div>
+      </div>
+
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-track" id="marquee"></div>
+      </div>
+    </section>
+
+    <!-- ============ Tentang ============ -->
+    <section class="section container" id="about">
+      <div class="section-head reveal">
+        <p class="eyebrow">Tentang saya</p>
+        <h2>Merancang dengan tujuan.</h2>
+      </div>
+
+      <div class="about-card reveal">
+        <div class="about-top">
+          <div>
+            <p id="about-text"></p>
+            <ul class="feature-list" id="about-points"></ul>
+            <div class="tags" id="about-tags"></div>
+          </div>
+          <!-- Kartu identitas 3D yang menggantung; bisa ditarik dan diklik untuk membalik. -->
+          <div class="lanyard about-lanyard" id="lanyard">
+            <p class="lanyard-hint">Tarik kartunya, klik untuk membalik.</p>
+          </div>
+        </div>
+
+        <div class="panel-grid" id="about-panels"></div>
+      </div>
+
+      <div class="stats" id="stats"></div>
+    </section>
+
+    <!-- ============ Keahlian ============ -->
+    <section class="section container" id="skills">
+      <div class="section-head reveal">
+        <p class="eyebrow">Keahlian</p>
+        <h2>Tools yang saya gunakan.</h2>
+        <p>Dikelompokkan sesuai jenis pekerjaan yang paling sering saya ambil.</p>
+      </div>
+      <div class="panel-grid skills-panels reveal" id="skills-grid"></div>
+    </section>
+
+    <!-- ============ Proyek ============ -->
+    <section class="section container" id="projects">
+      <div class="section-head reveal">
+        <p class="eyebrow">Karya terpilih</p>
+        <h2>Proyek yang pernah dibuat.</h2>
+        <p>Klik salah satu kartu untuk melihat detail, fitur utama, dan tautannya.</p>
+      </div>
+      <!-- Galeri melengkung: tampilan tiap aplikasi, bisa digeser dan diklik untuk diperbesar. -->
+      <div class="gallery-stage reveal" id="gallery" aria-label="Galeri tampilan aplikasi"></div>
+      <p class="gallery-note" id="gallery-note" hidden></p>
+
+      <div class="filters" id="filters" role="group" aria-label="Filter kategori proyek"></div>
+      <div class="project-grid" id="project-grid"></div>
+      <p class="empty" id="empty" hidden>Tidak ada proyek pada kategori ini.</p>
+    </section>
+
+    <!-- ============ Perjalanan ============ -->
+    <section class="section container" id="journey">
+      <div class="section-head reveal">
+        <p class="eyebrow">Perjalanan</p>
+        <h2>Pengalaman &amp; pendidikan.</h2>
+      </div>
+      <div class="two-col">
+        <div class="reveal">
+          <p class="eyebrow">Pengalaman</p>
+          <div class="timeline" id="experience"></div>
+        </div>
+        <div class="reveal">
+          <p class="eyebrow">Pendidikan</p>
+          <div class="timeline" id="education"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Sertifikat ============ -->
+    <section class="section container" id="certificates">
+      <div class="section-head reveal">
+        <p class="eyebrow">Sertifikat</p>
+        <h2>Pembelajaran berkelanjutan.</h2>
+      </div>
+      <div class="cert-grid reveal" id="cert-grid"></div>
+    </section>
+
+    <!-- ============ Kontak ============ -->
+    <section class="section container" id="contact">
+      <div class="section-head reveal">
+        <p class="eyebrow">Kontak</p>
+        <h2>Mari membuat sesuatu.</h2>
+      </div>
+
+      <div class="contact-wrap reveal">
+        <div>
+          <p class="muted">Punya ide atau ingin berkolaborasi? Kirim pesan lewat form, atau pakai jalur di bawah ini.</p>
+          <ul class="contact-list" id="contact-list"></ul>
+          <div class="actions">
+            <a class="button" id="wa-link" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="button alt" id="email-link">Email</a>
+          </div>
+        </div>
+
+        <form class="form" id="contact-form" novalidate>
+          <label>Nama<input name="name" required autocomplete="name" minlength="2"></label>
+          <label>Email<input name="email" type="email" required autocomplete="email"></label>
+          <label>Pesan<textarea name="message" required minlength="10"></textarea></label>
+          <p class="error" id="form-error" role="status" aria-live="polite"></p>
+          <button class="button" type="submit" id="form-submit">Kirim pesan</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ Footer ============ -->
+  <footer class="footer">
+    <div class="container footer-in">
+      <span>© <span id="year"></span> <span id="brand-footer">Portofolio</span>. Dibuat dengan HTML, CSS, dan JavaScript.</span>
+      <span class="socials" id="footer-socials"></span>
+    </div>
+  </footer>
+
+  <!-- ============ Dialog detail proyek ============ -->
+  <dialog class="sheet" id="project-sheet" aria-labelledby="sheet-title">
+    <div class="sheet-head">
+      <div>
+        <p class="eyebrow" id="sheet-category"></p>
+        <h3 id="sheet-title"></h3>
+      </div>
+      <button class="sheet-close" id="sheet-close" type="button" aria-label="Tutup detail">✕</button>
+    </div>
+    <div class="sheet-body" id="sheet-body"></div>
+  </dialog>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script type="module">
+    import { createLanyard } from './assets/js/lanyard.js';
+    const host = document.getElementById('lanyard');
+    const lanyard = host && createLanyard(host, {
+      frontImage: 'assets/img/card-front.png',
+      backImage: 'assets/img/card-back.png',
+      strapImage: 'assets/img/lanyard-band.png',
+      cardColor: '#15102a',
+      finish: 'glossy',
+      cornerRadius: 0.35,
+      size: 0.62,
+      strapLength: 0.42,
+      strapWidth: 0.7,
+      metal: 'silver',
+      damping: 0.55,
+      breeze: 0.4
+    });
+    if (lanyard) host.classList.add('is-live');
+  </script>
+
+  <script type="module">
+    import { createCircularGallery } from './assets/js/circular-gallery.js';
+
+    const stage = document.getElementById('gallery');
+    const data = window.portfolioData;
+    if (stage && data) {
+      // Proyek tanpa screenshot memakai kartu penanda, bukan dashboard palsu.
+      const placeholder = (project) => {
+        const c = document.createElement('canvas');
+        c.width = 1000; c.height = 1282;              // mengikuti itemAspect 0.78
+        const x = c.getContext('2d');
+        const bg = x.createLinearGradient(0, 0, c.width, c.height);
+        bg.addColorStop(0, '#241544'); bg.addColorStop(1, '#0a0712');
+        x.fillStyle = bg; x.fillRect(0, 0, c.width, c.height);
+        const halo = x.createRadialGradient(500, 430, 0, 500, 430, 620);
+        halo.addColorStop(0, 'rgba(139,92,246,.42)'); halo.addColorStop(1, 'rgba(139,92,246,0)');
+        x.fillStyle = halo; x.fillRect(0, 0, c.width, c.height);
+
+        x.textAlign = 'center';
+        x.fillStyle = 'rgba(167,139,250,.95)';
+        x.font = '600 30px Inter, system-ui, sans-serif';
+        x.fillText(project.category.toUpperCase(), 500, 300);
+
+        x.fillStyle = '#ffffff';
+        x.font = '700 72px Sora, Inter, system-ui, sans-serif';
+        const words = project.title.split(' ');
+        const lines = [];
+        let line = '';
+        for (const w of words) {
+          const probe = line ? line + ' ' + w : w;
+          if (x.measureText(probe).width > 820 && line) { lines.push(line); line = w; } else line = probe;
+        }
+        if (line) lines.push(line);
+        lines.forEach((l, i) => x.fillText(l, 500, 430 + i * 86));
+
+        x.strokeStyle = 'rgba(167,139,250,.5)';
+        x.beginPath(); x.moveTo(300, 560 + (lines.length - 1) * 86); x.lineTo(700, 560 + (lines.length - 1) * 86); x.stroke();
+
+        x.fillStyle = 'rgba(207,198,234,.9)';
+        x.font = '500 34px Inter, system-ui, sans-serif';
+        x.fillText(project.tech.join(' · '), 500, 640 + (lines.length - 1) * 86);
+
+        x.fillStyle = 'rgba(154,143,190,.8)';
+        x.font = '400 28px Inter, system-ui, sans-serif';
+        x.fillText('Tangkapan layar belum tersedia', 500, c.height - 110);
+        return c.toDataURL('image/png');
+      };
+
+      const items = data.projects.map(p => ({
+        image: p.screenshot || placeholder(p),
+        text: p.title,
+        description: p.description.startsWith('[ISI]') ? '' : p.description,
+        alt: `Tampilan aplikasi ${p.title}`
+      }));
+
+      const ink = () => getComputedStyle(document.documentElement).getPropertyValue('--ink').trim() || '#ffffff';
+
+      const gallery = createCircularGallery(stage, {
+        items,
+        bend: 3,
+        textColor: ink(),
+        borderRadius: 0.05,
+        scrollEase: 0.05,
+        itemSize: 1,
+        itemAspect: 0.78,
+        gap: 0.26,
+        wave: 1,
+        fadeEdges: 0.12,
+        shadow: 0.25,
+        scrollSpeed: 2,
+        autoScroll: 0,
+        snap: true,
+        grayscale: false,
+        showTitles: true,
+        openOnClick: true,
+        intro: true,
+        font: 'bold 30px Sora',
+        onItemClick: (item, index) => { stage.dataset.last = String(index); }
+      });
+
+      if (gallery) {
+        const note = document.getElementById('gallery-note');
+        note.textContent = 'Geser untuk menjelajah, klik kartu untuk memperbesar.';
+        note.hidden = false;
+        // Warna judul mengikuti tema terang/gelap.
+        new MutationObserver(() => gallery.update({ textColor: ink() }))
+          .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+      } else {
+        stage.remove();
+      }
+    }
+  </script>
+</body>
+</html>

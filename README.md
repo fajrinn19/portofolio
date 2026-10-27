@@ -64,6 +64,15 @@ di `assets/img/`. Ganti ketiganya bila identitas berubah.
 Karena memakai ES module, halaman harus dibuka lewat HTTP — bukan `file://`. Untuk mencoba
 lokal: `python3 -m http.server 8000` lalu buka `http://127.0.0.1:8000`.
 
+## Galeri melengkung (bagian "Proyek")
+Galeri tampilan aplikasi adalah port vanilla dari komponen React Bits `<CircularGallery />`
+(`assets/js/circular-gallery.js`). Murni WebGL2, tanpa dependensi.
+
+Gambar tiap kartu diambil dari `projects[].screenshot`. Selama field itu kosong, kartu memakai
+penanda bergaya situs yang bertuliskan "Tangkapan layar belum tersedia" - bukan dashboard palsu.
+Isi `screenshot` dengan path gambar asli (mis. `assets/img/roasting.webp`) dan kartu langsung
+memakai gambar itu.
+
 ## Domain
 Sebelum deploy, ganti `GANTI-DOMAIN.vercel.app` di `index.html`, `robots.txt`, `sitemap.xml`,
 dan `site.domain` pada `assets/js/data.js`.

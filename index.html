@@ -151,6 +151,10 @@
         <h2>Proyek yang pernah dibuat.</h2>
         <p>Klik salah satu kartu untuk melihat detail, fitur utama, dan tautannya.</p>
       </div>
+      <!-- Galeri melengkung: tampilan tiap aplikasi, bisa digeser dan diklik untuk diperbesar. -->
+      <div class="gallery-stage reveal" id="gallery" aria-label="Galeri tampilan aplikasi"></div>
+      <p class="gallery-note" id="gallery-note" hidden></p>
+
       <div class="filters" id="filters" role="group" aria-label="Filter kategori proyek"></div>
       <div class="project-grid" id="project-grid"></div>
       <p class="empty" id="empty" hidden>Tidak ada proyek pada kategori ini.</p>
@@ -251,6 +255,99 @@
       breeze: 0.4
     });
     if (lanyard) host.classList.add('is-live');
+  </script>
+
+  <script type="module">
+    import { createCircularGallery } from './assets/js/circular-gallery.js';
+
+    const stage = document.getElementById('gallery');
+    const data = window.portfolioData;
+    if (stage && data) {
+      // Proyek tanpa screenshot memakai kartu penanda, bukan dashboard palsu.
+      const placeholder = (project) => {
+        const c = document.createElement('canvas');
+        c.width = 1000; c.height = 1282;              // mengikuti itemAspect 0.78
+        const x = c.getContext('2d');
+        const bg = x.createLinearGradient(0, 0, c.width, c.height);
+        bg.addColorStop(0, '#241544'); bg.addColorStop(1, '#0a0712');
+        x.fillStyle = bg; x.fillRect(0, 0, c.width, c.height);
+        const halo = x.createRadialGradient(500, 430, 0, 500, 430, 620);
+        halo.addColorStop(0, 'rgba(139,92,246,.42)'); halo.addColorStop(1, 'rgba(139,92,246,0)');
+        x.fillStyle = halo; x.fillRect(0, 0, c.width, c.height);
+
+        x.textAlign = 'center';
+        x.fillStyle = 'rgba(167,139,250,.95)';
+        x.font = '600 30px Inter, system-ui, sans-serif';
+        x.fillText(project.category.toUpperCase(), 500, 300);
+
+        x.fillStyle = '#ffffff';
+        x.font = '700 72px Sora, Inter, system-ui, sans-serif';
+        const words = project.title.split(' ');
+        const lines = [];
+        let line = '';
+        for (const w of words) {
+          const probe = line ? line + ' ' + w : w;
+          if (x.measureText(probe).width > 820 && line) { lines.push(line); line = w; } else line = probe;
+        }
+        if (line) lines.push(line);
+        lines.forEach((l, i) => x.fillText(l, 500, 430 + i * 86));
+
+        x.strokeStyle = 'rgba(167,139,250,.5)';
+        x.beginPath(); x.moveTo(300, 560 + (lines.length - 1) * 86); x.lineTo(700, 560 + (lines.length - 1) * 86); x.stroke();
+
+        x.fillStyle = 'rgba(207,198,234,.9)';
+        x.font = '500 34px Inter, system-ui, sans-serif';
+        x.fillText(project.tech.join(' · '), 500, 640 + (lines.length - 1) * 86);
+
+        x.fillStyle = 'rgba(154,143,190,.8)';
+        x.font = '400 28px Inter, system-ui, sans-serif';
+        x.fillText('Tangkapan layar belum tersedia', 500, c.height - 110);
+        return c.toDataURL('image/png');
+      };
+
+      const items = data.projects.map(p => ({
+        image: p.screenshot || placeholder(p),
+        text: p.title,
+        description: p.description.startsWith('[ISI]') ? '' : p.description,
+        alt: `Tampilan aplikasi ${p.title}`
+      }));
+
+      const ink = () => getComputedStyle(document.documentElement).getPropertyValue('--ink').trim() || '#ffffff';
+
+      const gallery = createCircularGallery(stage, {
+        items,
+        bend: 3,
+        textColor: ink(),
+        borderRadius: 0.05,
+        scrollEase: 0.05,
+        itemSize: 1,
+        itemAspect: 0.78,
+        gap: 0.26,
+        wave: 1,
+        fadeEdges: 0.12,
+        shadow: 0.25,
+        scrollSpeed: 2,
+        autoScroll: 0,
+        snap: true,
+        grayscale: false,
+        showTitles: true,
+        openOnClick: true,
+        intro: true,
+        font: 'bold 30px Sora',
+        onItemClick: (item, index) => { stage.dataset.last = String(index); }
+      });
+
+      if (gallery) {
+        const note = document.getElementById('gallery-note');
+        note.textContent = 'Geser untuk menjelajah, klik kartu untuk memperbesar.';
+        note.hidden = false;
+        // Warna judul mengikuti tema terang/gelap.
+        new MutationObserver(() => gallery.update({ textColor: ink() }))
+          .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+      } else {
+        stage.remove();
+      }
+    }
   </script>
 </body>
 </html>

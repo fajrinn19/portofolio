@@ -245,21 +245,23 @@ const portfolioData = {
     },
     {
       title: 'Web Madaya Sinjai',
-      description: 'Website untuk Madaya Sinjai sebagai kanal informasi dan profil usaha kopi mereka.',
+      description: 'Website kawasan pemberdayaan terpadu Madaya Sinjai: profil lima pilar, katalog kopi, cafe, serta pemesanan vila dan camping.',
       category: 'Website',
       year: '[ISI]',
       role: 'Web Developer',
-      featured: false,
+      featured: true,
       tech: ['Laravel', 'PHP', 'MySQL'],
       metrics: [],
       features: [
-        'Halaman profil dan informasi usaha.',
-        '[ISI] Fitur utama lainnya.',
-        '[ISI] Fitur utama lainnya.'
+        'Profil kawasan dan lima pilarnya: ekonomi, dakwah, kesehatan, pendidikan, dan sosial.',
+        'Katalog kopi dengan keranjang belanja serta akun pengunjung untuk masuk dan mendaftar.',
+        'Panduan Cara Menyeduh berisi empat resep lengkap dengan dosis, air, suhu, waktu, dan penghitung waktu berjalan.',
+        'Halaman vila dan camping beserta ketersediaan unit, kapasitas, dan pengecekan status pesanan.',
+        'Berita kawasan, halaman kontak, dan mode terang/gelap.'
       ],
       demo: 'https://madayasinjai.com',
       repo: '',
-      screenshot: ''
+      screenshot: 'assets/img/web-madaya.webp'
     },
     {
       title: 'Rialau Project',

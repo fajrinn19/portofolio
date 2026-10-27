@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Logo">
   <rect width="200" height="200" rx="46" fill="#0a0712"/>
-  <g fill="none" stroke="#a78bfa" stroke-width="10" stroke-linejoin="miter"
-     transform="translate(100 100) scale(.82) translate(-100 -100)">
-    <path d="M100 6 194 100 100 194 6 100Z"/>
-    <circle cx="100" cy="100" r="74"/>
-    <circle cx="73" cy="73" r="35.5"/>
-    <circle cx="127" cy="73" r="35.5"/>
-    <circle cx="127" cy="127" r="35.5"/>
-    <circle cx="73" cy="127" r="35.5"/>
+  <g fill="none" stroke="#a78bfa" stroke-width="9" stroke-linejoin="miter"
+     transform="translate(100 100) scale(.86) translate(-100 -100)">
+    <path d="M100 16 184 100 100 184 16 100Z"/>
+    <circle cx="100" cy="100" r="70"/>
+    <circle cx="75" cy="75" r="35"/>
+    <circle cx="125" cy="75" r="35"/>
+    <circle cx="125" cy="125" r="35"/>
+    <circle cx="75" cy="125" r="35"/>
   </g>
 </svg>

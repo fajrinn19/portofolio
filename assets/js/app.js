@@ -37,10 +37,10 @@
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const initials = d.site.name.trim().split(/\s+/).map((w) => w[0]).slice(0, 2).join('').toUpperCase();
   const LOGO = '<svg viewBox="0 0 200 200" aria-hidden="true" fill="none" stroke="currentColor"'
-    + ' stroke-width="9" stroke-linejoin="miter">'
-    + '<path d="M100 6 194 100 100 194 6 100Z"/><circle cx="100" cy="100" r="74"/>'
-    + '<circle cx="73" cy="73" r="35.5"/><circle cx="127" cy="73" r="35.5"/>'
-    + '<circle cx="127" cy="127" r="35.5"/><circle cx="73" cy="127" r="35.5"/></svg>';
+    + ' stroke-width="8" stroke-linejoin="miter">'
+    + '<path d="M100 16 184 100 100 184 16 100Z"/><circle cx="100" cy="100" r="70"/>'
+    + '<circle cx="75" cy="75" r="35"/><circle cx="125" cy="75" r="35"/>'
+    + '<circle cx="125" cy="125" r="35"/><circle cx="75" cy="125" r="35"/></svg>';
   const origin = `https://${d.site.domain}`;
 
   /* ---------------- Ikon ---------------- */

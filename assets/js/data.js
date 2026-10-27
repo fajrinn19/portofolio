@@ -67,7 +67,7 @@ const portfolioData = {
 
   // Angka di bawah dihitung dari pengalaman nyata, bukan perkiraan.
   stats: [
-    { label: t('Produk digital dibangun', 'Digital products built'), value: 10, suffix: '' },
+    { label: t('Produk digital dibangun', 'Digital products built'), value: 13, suffix: '' },
     { label: t('Website dirilis', 'Websites shipped'), value: 3, suffix: '' },
     { label: t('Pengalaman kerja', 'Work experience'), value: 2, suffix: '' },
     { label: t('IPK', 'GPA'), value: 3, suffix: ',00' }
@@ -132,18 +132,24 @@ const portfolioData = {
   projects: [
     {
       title: 'Roasting',
-      description: t('Aplikasi pencatatan dan pemantauan proses sangrai kopi, dari profil roasting sampai riwayat setiap batch.',
-                     'An app for recording and monitoring coffee roasting, from roast profiles to the history of every batch.'),
+      description: t('Aplikasi sangrai kopi yang membaca suhu bean dan drum langsung dari mesin lewat Bluetooth, merekam kurva roasting, dan mencetak label batch.',
+                     'A coffee roasting app that reads bean and drum temperature straight from the machine over Bluetooth, records the roast curve, and prints batch labels.'),
       category: t('Aplikasi Kopi', 'Coffee Apps'),
       year: '[ISI]',
       role: 'Developer',
       featured: true,
-      tech: ['Kotlin', 'Android'],
+      tech: ['Kotlin', 'Android', 'Bluetooth'],
       metrics: [],
       features: [
-        t('Pencatatan profil dan parameter setiap batch sangrai.', 'Records the profile and parameters of every roast batch.'),
-        t('Pemantauan jalannya proses roasting.', 'Monitors the roast as it runs.'),
-        t('Riwayat batch sebagai acuan konsistensi rasa.', 'Batch history as a reference for flavour consistency.')
+        t('Pembacaan suhu bean dan drum secara langsung dari mesin lewat Bluetooth.',
+          'Live bean and drum temperature read from the machine over Bluetooth.'),
+        t('Grafik kurva roasting berjalan dengan durasi sesi.', 'A live roast curve chart with session duration.'),
+        t('Penanda tahap sangrai: turning point, drying, yellowing, browning, Maillard, dan first crack.',
+          'Roast phase markers: turning point, drying, yellowing, browning, Maillard and first crack.'),
+        t('Antrian batch, stok, rekap laporan, dan data mentah tiap sesi.',
+          'A batch queue, stock, report summaries and the raw data of each session.'),
+        t('Label roast bean 80x100 mm siap cetak berisi varietas, proses, asal, berat, kurva, dan catatan first crack serta drop.',
+          'A print-ready 80x100 mm roast bean label with variety, process, origin, weight, curve, and first crack and drop notes.')
       ],
       demo: '', repo: '', screenshot: ''
     },
@@ -254,6 +260,73 @@ const portfolioData = {
         t('Pembacaan sensor suhu dan pH pada tangki fermentasi.', 'Temperature and pH sensor readings on the fermentation tank.'),
         t('Pengiriman data real-time dari ESP32 ke aplikasi Android.', 'Real-time data from the ESP32 to the Android app.'),
         t('Pemantauan proses fermentasi tanpa harus berada di lokasi.', 'Monitoring the fermentation without having to be on site.')
+      ],
+      demo: '', repo: '', screenshot: ''
+    },
+    {
+      title: 'Madaya NFC Lot',
+      description: t('Aplikasi pelacakan lot kopi berbasis kartu NFC: kode lot dibuat otomatis, ditulis ke tag, dan bisa dibaca ulang di lapangan.',
+                     'An NFC-based coffee lot tracker: lot codes are generated automatically, written to a tag, and read back in the field.'),
+      category: 'IoT',
+      year: '[ISI]',
+      role: 'Developer',
+      featured: false,
+      tech: ['Kotlin', 'Android', 'NFC'],
+      metrics: [],
+      features: [
+        t('Kode lot dibuat otomatis dari jenis kopi, metode proses, dan tanggal produksi.',
+          'Lot codes generated automatically from coffee type, process method and production date.'),
+        t('Penulisan kode lot ke tag NFC, dan pembacaan ulang tag untuk memanggil datanya.',
+          'Writes the lot code to an NFC tag and reads the tag back to pull up its data.'),
+        t('Daftar lot tersimpan dengan varietas, proses, berat, tanggal, dan grade mutu.',
+          'A saved lot list with variety, process, weight, date and quality grade.'),
+        t('Akumulasi produksi per varietas, metode proses, dan grade, dengan filter semua/bulan/minggu.',
+          'Production totals by variety, process method and grade, filterable by all time, month or week.')
+      ],
+      demo: '', repo: '', screenshot: ''
+    },
+    {
+      title: t('Absensi Karyawan', 'Employee Attendance'),
+      description: t('Aplikasi absensi karyawan dengan tampilan berbeda untuk pengelola dan karyawan, lengkap dengan persetujuan cuti dan ekspor laporan.',
+                     'An employee attendance app with separate views for managers and staff, including leave approval and report export.'),
+      category: t('Operasional', 'Operations'),
+      year: '[ISI]',
+      role: 'Developer',
+      featured: false,
+      tech: ['Kotlin', 'Android'],
+      metrics: [],
+      features: [
+        t('Tampilan karyawan: absensi masuk dan pulang hari ini, rekap kehadiran, izin, sakit, dan alpa bulan berjalan.',
+          "A staff view: today's clock-in and clock-out, plus this month's attendance, leave, sick days and absences."),
+        t('Tampilan pengelola: rekap hadir, terlambat, cuti, izin, dan sakit per minggu, bulan, atau tahun.',
+          'A manager view: present, late, leave, permission and sick totals by week, month or year.'),
+        t('Grafik kehadiran per pekan yang bisa diketuk untuk melihat rinciannya.',
+          'A weekly attendance chart you can tap for the detail behind each bar.'),
+        t('Rincian per karyawan dan ekspor CSV untuk kebutuhan administrasi.',
+          'A per-employee breakdown and CSV export for administration.'),
+        t('Persetujuan pengajuan cuti dan lembur dengan penanda jumlah yang menunggu.',
+          'Leave and overtime approvals with a pending count.')
+      ],
+      demo: '', repo: '', screenshot: ''
+    },
+    {
+      title: t('Absensi Anak Magang', 'Intern Attendance'),
+      description: t('Aplikasi absensi harian anak magang dengan pengelompokan, penilaian, dan ekspor laporan evaluasi.',
+                     'A daily intern attendance app with grouping, scoring and evaluation report export.'),
+      category: t('Operasional', 'Operations'),
+      year: '[ISI]',
+      role: 'Developer',
+      featured: false,
+      tech: ['Kotlin', 'Android'],
+      metrics: [],
+      features: [
+        t('Pencatatan absensi harian per tanggal: hadir, terlambat, izin, sakit, dan alpa, berikut jam datang dan pulang.',
+          'Daily attendance by date: present, late, permission, sick and absent, with arrival and departure times.'),
+        t('Pengelompokan peserta dan pencarian nama, plus penandaan hadir sekaligus untuk satu kelompok.',
+          'Participant grouping and name search, plus marking a whole group present at once.'),
+        t('Diagram komposisi kehadiran dan nilai rata-rata sebagai bahan evaluasi.',
+          'An attendance composition chart and average score for evaluation.'),
+        t('Ekspor laporan untuk diserahkan ke pembimbing.', 'Report export to hand over to the supervisor.')
       ],
       demo: '', repo: '', screenshot: ''
     },

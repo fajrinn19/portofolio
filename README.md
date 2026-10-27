@@ -92,6 +92,14 @@ memakai gambar itu.
 Sebelum deploy, ganti `GANTI-DOMAIN.vercel.app` di `index.html`, `robots.txt`, `sitemap.xml`,
 dan `site.domain` pada `assets/js/data.js`.
 
+## Tangkapan layar proyek
+Kartu galeri memakai `projects[].screenshot`. Bila kosong, kartu memakai penanda bergaya situs
+yang menyatakan tangkapan layarnya belum ada - bukan dashboard palsu.
+
+Sebelum memasang tangkapan layar aplikasi internal, periksa dulu isinya: nama orang, nomor
+telepon, alamat email, dan angka keuangan organisasi tidak boleh ikut tayang. Kaburkan bagian
+itu, atau pilih layar lain.
+
 ## Yang masih perlu diisi
 Identitas, riwayat, dan pelatihan sudah terisi. Yang masih bertanda `[ISI]`:
 

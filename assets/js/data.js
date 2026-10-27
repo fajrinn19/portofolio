@@ -70,7 +70,7 @@ const portfolioData = {
     { label: t('Produk digital dibangun', 'Digital products built'), value: 13, suffix: '' },
     { label: t('Website dirilis', 'Websites shipped'), value: 3, suffix: '' },
     { label: t('Pengalaman kerja', 'Work experience'), value: 2, suffix: '' },
-    { label: t('IPK', 'GPA'), value: 3, suffix: ',00' }
+    { label: t('Pelatihan diikuti', 'Trainings completed'), value: 2, suffix: '' }
   ],
 
   /* ---------- Panel kartu "About me" ---------- */
@@ -180,7 +180,7 @@ const portfolioData = {
         t('Pengelolaan panelis untuk penilaian dan kalibrasi, plus berbagi ringkasan peringkat.',
           'Panellist management for scoring and calibration, plus sharing a ranked summary.')
       ],
-      demo: '', repo: '', screenshot: ''
+      demo: '', repo: '', screenshot: 'assets/img/sca-cupping.webp'
     },
     {
       title: 'Defect Math',
@@ -220,7 +220,7 @@ const portfolioData = {
           'A searchable coded asset list with location, quantity, condition, acquisition value and book value.'),
         t('Modul opname untuk pemeriksaan stok berkala.', 'A stock-take module for periodic checks.')
       ],
-      demo: '', repo: '', screenshot: ''
+      demo: '', repo: '', screenshot: 'assets/img/inventaris.webp'
     },
     {
       title: 'Madaya Cafe Ops',
@@ -244,7 +244,7 @@ const portfolioData = {
         t('Opname stok per lokasi dengan sesi berkode dan penghitungan selisih.',
           'Stock takes per location with coded sessions and variance calculation.')
       ],
-      demo: '', repo: '', screenshot: ''
+      demo: '', repo: '', screenshot: 'assets/img/cafe-ops.webp'
     },
     {
       title: t('Monitoring Fermentasi ESP32', 'ESP32 Fermentation Monitor'),
@@ -307,7 +307,7 @@ const portfolioData = {
         t('Persetujuan pengajuan cuti dan lembur dengan penanda jumlah yang menunggu.',
           'Leave and overtime approvals with a pending count.')
       ],
-      demo: '', repo: '', screenshot: ''
+      demo: '', repo: '', screenshot: 'assets/img/absensi-karyawan.webp'
     },
     {
       title: t('Absensi Anak Magang', 'Intern Attendance'),
@@ -328,7 +328,7 @@ const portfolioData = {
           'An attendance composition chart and average score for evaluation.'),
         t('Ekspor laporan untuk diserahkan ke pembimbing.', 'Report export to hand over to the supervisor.')
       ],
-      demo: '', repo: '', screenshot: ''
+      demo: '', repo: '', screenshot: 'assets/img/absensi-magang.webp'
     },
     {
       title: t('Produksi', 'Production'),
@@ -433,7 +433,7 @@ const portfolioData = {
       place: t('Universitas Negeri Makassar', 'Universitas Negeri Makassar'),
       period: '2022 — 2026',
       points: [
-        t('IPK 3,00 · Lulus 29 Juli 2026', 'GPA 3.00 · Graduated 29 July 2026'),
+        t('Lulus 29 Juli 2026', 'Graduated 29 July 2026'),
         t('Fokus: pengembangan perangkat lunak dan sistem berbasis IoT.', 'Focus: software development and IoT-based systems.')
       ]
     }

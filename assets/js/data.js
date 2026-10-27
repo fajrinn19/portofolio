@@ -184,20 +184,26 @@ const portfolioData = {
     },
     {
       title: 'Defect Math',
-      description: t('Aplikasi perhitungan dan klasifikasi cacat biji kopi secara otomatis.',
-                     'An app that counts and classifies coffee bean defects automatically.'),
+      description: t('Aplikasi evaluasi mutu green bean mengikuti metode SCA: tally cacat per jenis, perhitungan full defect, dan penentuan grade secara langsung.',
+                     'A green bean quality app following the SCA method: defect tally by type, full defect calculation and live grading.'),
       category: t('Aplikasi Kopi', 'Coffee Apps'),
       year: '[ISI]',
       role: 'Developer',
       featured: false,
       tech: ['Kotlin', 'Android'],
-      metrics: [],
+      // Ukuran sampel 350 g adalah ketentuan metode SCA, bukan klaim hasil.
+      metrics: [{ value: '350 g', label: t('sampel per evaluasi', 'sample per evaluation') }],
       features: [
-        t('Input temuan cacat per kategori.', 'Enter defect findings by category.'),
-        t('Perhitungan dan klasifikasi cacat secara otomatis.', 'Automatic defect counting and classification.'),
-        t('Ringkasan hasil sebagai dasar penilaian mutu biji.', 'A result summary as the basis for grading the beans.')
+        t('Tally cacat per jenis dengan perhitungan full defect yang berjalan langsung.',
+          'Defect tally by type with a running full-defect calculation.'),
+        t('Penentuan grade otomatis, termasuk penanda lolos atau tidaknya Specialty.',
+          'Automatic grading, including whether the sample passes Specialty.'),
+        t('Analisis distribusi cacat: proporsi primary terhadap secondary dan sebaran jenisnya.',
+          'Defect distribution analysis: primary versus secondary proportion and the spread by type.'),
+        t('Riwayat evaluasi, pembandingan antar sampel, dan panduan metode di dalam aplikasi.',
+          'Evaluation history, sample-to-sample comparison and the method guide inside the app.')
       ],
-      demo: '', repo: '', screenshot: ''
+      demo: '', repo: '', screenshot: 'assets/img/defect-math.webp'
     },
     {
       title: t('Inventaris Kawasan', 'Area Inventory'),

@@ -45,7 +45,7 @@ const portfolioData = {
 
   // Angka di bawah dihitung dari pengalaman nyata, bukan perkiraan.
   stats: [
-    { label: 'Produk digital dibangun', value: 10, suffix: '' },
+    { label: 'Produk digital dibangun', value: 11, suffix: '' },
     { label: 'Website dirilis', value: 3, suffix: '' },
     { label: 'Pengalaman kerja', value: 2, suffix: '' },
     { label: 'IPK', value: 3, suffix: ',00' }
@@ -166,7 +166,7 @@ const portfolioData = {
       screenshot: ''
     },
     {
-      title: 'Inventaris Madaya Cafe Ops',
+      title: 'Inventaris Kawasan',
       description: 'Aplikasi inventaris kawasan untuk mendata aset per lokasi, memantau kondisinya, dan menjalankan stock opname.',
       category: 'Operasional',
       year: '[ISI]',
@@ -180,6 +180,26 @@ const portfolioData = {
         'Grafik nilai aset dan jumlah unit per lokasi, dipisah karena rupiah dan jumlah barang bukan satuan yang sama.',
         'Daftar aset berkode dengan pencarian, serta rincian tempat, jumlah, kondisi, nilai perolehan, dan nilai buku.',
         'Modul opname untuk pemeriksaan stok berkala.'
+      ],
+      demo: '',
+      repo: '',
+      screenshot: ''                     // TODO: isi setelah gambar tersedia
+    },
+    {
+      title: 'Madaya Cafe Ops',
+      description: 'Aplikasi operasional cafe: katalog menu, tutup kasir per shift, pemantauan bahan menipis, dan perhitungan margin tiap menu.',
+      category: 'Operasional',
+      year: '[ISI]',
+      role: 'Developer',
+      featured: false,
+      tech: ['Kotlin', 'Android'],
+      metrics: [],
+      features: [
+        'Katalog menu berkategori dengan pencarian dan pemindai kode.',
+        'Tutup kasir per shift: ringkasan tunai, QRIS, dan transfer, lalu hitung fisik laci beserta selisihnya.',
+        'Peringatan bahan menipis dengan kekurangan per satuan terhadap batas minimum.',
+        'Perhitungan margin per menu memakai rumus HPP yang bisa diatur sendiri (bahan, waste, inflasi, layanan, operasional).',
+        'Opname stok per lokasi dengan sesi berkode dan penghitungan selisih.'
       ],
       demo: '',
       repo: '',
@@ -205,21 +225,23 @@ const portfolioData = {
     },
     {
       title: 'Produksi',
-      description: '[ISI] Deskripsi singkat aplikasi Produksi - proses apa yang dicatat dan siapa penggunanya.',
+      description: 'Aplikasi alur produksi kopi dari penerimaan ceri sampai green bean, lengkap dengan pencatatan lot, setoran petani, dan laporan rendemen.',
       category: 'Operasional',
       year: '[ISI]',
       role: 'Developer',
-      featured: false,
+      featured: true,
       tech: ['Kotlin', 'Android'],
       metrics: [],
       features: [
-        '[ISI] Fitur utama 1.',
-        '[ISI] Fitur utama 2.',
-        '[ISI] Fitur utama 3.'
+        'Dasbor alur produksi per tahap: ceri, fermentasi, penjemuran, istirahat, hulling, dan green bean.',
+        'Lot berkode dengan label yang bisa dipindai, pencatatan tiap tahap proses, dan penandaan kelas.',
+        'Data petani beserta varietas, asal, dan luas lahan, terhubung ke setoran dan pembayaran.',
+        'Laporan rendemen ceri ke green bean, riwayat lot, dan kinerja petani dengan rentang tanggal.',
+        'Modul gudang untuk stok green bean, roast bean, blend, dan penjualan.'
       ],
       demo: '',
       repo: '',
-      screenshot: ''
+      screenshot: 'assets/img/produksi.webp'
     },
     {
       title: 'Kasir',

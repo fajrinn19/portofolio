@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://raka-pratama.vercel.app/sitemap.xml

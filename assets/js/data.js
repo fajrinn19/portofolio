@@ -45,7 +45,7 @@ const portfolioData = {
 
   // Angka di bawah dihitung dari pengalaman nyata, bukan perkiraan.
   stats: [
-    { label: 'Produk digital dibangun', value: 11, suffix: '' },
+    { label: 'Produk digital dibangun', value: 10, suffix: '' },
     { label: 'Website dirilis', value: 3, suffix: '' },
     { label: 'Pengalaman kerja', value: 2, suffix: '' },
     { label: 'IPK', value: 3, suffix: ',00' }
@@ -187,7 +187,7 @@ const portfolioData = {
     },
     {
       title: 'Madaya Cafe Ops',
-      description: 'Aplikasi operasional cafe: katalog menu, tutup kasir per shift, pemantauan bahan menipis, dan perhitungan margin tiap menu.',
+      description: 'Aplikasi operasional cafe yang menyatukan kasir, katalog menu, pemantauan bahan, dan perhitungan margin dalam satu aplikasi.',
       category: 'Operasional',
       year: '[ISI]',
       role: 'Developer',
@@ -195,7 +195,7 @@ const portfolioData = {
       tech: ['Kotlin', 'Android'],
       metrics: [],
       features: [
-        'Katalog menu berkategori dengan pencarian dan pemindai kode.',
+        'Kasir dengan katalog menu berkategori, pencarian, dan pemindai kode.',
         'Tutup kasir per shift: ringkasan tunai, QRIS, dan transfer, lalu hitung fisik laci beserta selisihnya.',
         'Peringatan bahan menipis dengan kekurangan per satuan terhadap batas minimum.',
         'Perhitungan margin per menu memakai rumus HPP yang bisa diatur sendiri (bahan, waste, inflasi, layanan, operasional).',
@@ -242,24 +242,6 @@ const portfolioData = {
       demo: '',
       repo: '',
       screenshot: 'assets/img/produksi.webp'
-    },
-    {
-      title: 'Kasir',
-      description: '[ISI] Deskripsi singkat aplikasi Kasir - transaksi apa yang ditangani dan di mana dipakai.',
-      category: 'Operasional',
-      year: '[ISI]',
-      role: 'Developer',
-      featured: false,
-      tech: ['Kotlin', 'Android'],
-      metrics: [],
-      features: [
-        '[ISI] Fitur utama 1.',
-        '[ISI] Fitur utama 2.',
-        '[ISI] Fitur utama 3.'
-      ],
-      demo: '',
-      repo: '',
-      screenshot: ''
     },
     {
       title: 'Web Madaya Sinjai',

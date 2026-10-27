@@ -28,8 +28,9 @@ const portfolioData = {
     domain: '[ISI].vercel.app',          // TODO: ganti setelah deploy
     formEndpoint: ''                     // kosong -> form memakai mailto. Isi untuk POST JSON
   },
-  /* ---------- Kartu kecil di atas foto ---------- */
-  highlight: { value: 'S1', label: 'Teknik Komputer\nUNM 2026' },
+  /* ---------- Kartu kecil di atas foto ----------
+     Diisi { value, label } untuk memunculkannya; null berarti tidak ditampilkan. */
+  highlight: null,
 
   /* ---------- Teks berjalan di bawah hero ---------- */
   marquee: ['Pengembangan Web', 'Aplikasi Mobile', 'Sistem IoT', 'Industri Kopi', 'Pengelolaan Data', 'IT Support'],
@@ -123,21 +124,28 @@ const portfolioData = {
     },
     {
       title: 'SCA Cupping',
-      description: 'Digitalisasi penilaian cita rasa kopi yang mengacu pada standar Specialty Coffee Association.',
+      description: 'Aplikasi penilaian cita rasa kopi mengikuti protokol SCA: 10 atribut, skala 100 poin, lengkap dengan timer tahapan dan roda rasa.',
       category: 'Aplikasi Kopi',
       year: '[ISI]',
       role: 'Developer',
       featured: false,
       tech: ['Kotlin', 'Android'],
-      metrics: [],
+      // Angka di bawah adalah spesifikasi protokol yang tertera di aplikasi, bukan klaim hasil.
+      metrics: [
+        { value: '10', label: 'atribut SCA' },
+        { value: '100', label: 'skala poin' },
+        { value: '73', label: 'deskriptor rasa' }
+      ],
       features: [
-        'Formulir penilaian cita rasa mengikuti standar SCA.',
-        'Perhitungan skor akhir secara otomatis.',
-        'Penyimpanan hasil cupping untuk perbandingan antar sampel.'
+        'Pendataan sampel: kode, petani, asal, varietas, proses, ketinggian, dan tanggal panen.',
+        'Penilaian 10 atribut dengan timer per tahap cupping dan penanda atribut yang belum dinilai.',
+        'Roda Rasa SCA interaktif berisi 73 deskriptor, ditambah kategori lokal Sinjai.',
+        'Skor otomatis dengan klasifikasi mutu, dari di bawah Specialty sampai Outstanding.',
+        'Pengelolaan panelis untuk penilaian dan kalibrasi, plus berbagi ringkasan peringkat.'
       ],
       demo: '',
       repo: '',
-      screenshot: ''
+      screenshot: ''                     // TODO: isi setelah gambar tersedia
     },
     {
       title: 'Defect Math',
@@ -159,7 +167,7 @@ const portfolioData = {
     },
     {
       title: 'Inventaris Madaya Cafe Ops',
-      description: 'Sistem gudang dan inventory untuk mengelola stok, keluar-masuk barang, dan pelaporan persediaan di Madaya.',
+      description: 'Aplikasi inventaris kawasan untuk mendata aset per lokasi, memantau kondisinya, dan menjalankan stock opname.',
       category: 'Operasional',
       year: '[ISI]',
       role: 'Developer',
@@ -167,13 +175,15 @@ const portfolioData = {
       tech: ['Kotlin', 'Android'],
       metrics: [],
       features: [
-        'Pengelolaan stok dan kartu persediaan.',
-        'Pencatatan barang masuk dan keluar.',
-        'Laporan persediaan untuk kebutuhan operasional.'
+        'Dasbor nilai aset dengan rincian jumlah unit, jenis barang, dan tempat.',
+        'Ringkasan kondisi seluruh unit: baik, perlu perbaikan, dan rusak.',
+        'Grafik nilai aset dan jumlah unit per lokasi, dipisah karena rupiah dan jumlah barang bukan satuan yang sama.',
+        'Daftar aset berkode dengan pencarian, serta rincian tempat, jumlah, kondisi, nilai perolehan, dan nilai buku.',
+        'Modul opname untuk pemeriksaan stok berkala.'
       ],
       demo: '',
       repo: '',
-      screenshot: ''
+      screenshot: ''                     // TODO: isi setelah gambar tersedia
     },
     {
       title: 'Monitoring Fermentasi ESP32',

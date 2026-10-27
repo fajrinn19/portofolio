@@ -44,7 +44,7 @@ const portfolioData = {
 
   // Angka di bawah dihitung dari pengalaman nyata, bukan perkiraan.
   stats: [
-    { label: 'Produk digital dibangun', value: 8, suffix: '' },
+    { label: 'Produk digital dibangun', value: 10, suffix: '' },
     { label: 'Website dirilis', value: 3, suffix: '' },
     { label: 'Pengalaman kerja', value: 2, suffix: '' },
     { label: 'IPK', value: 3, suffix: ',00' }
@@ -88,12 +88,10 @@ const portfolioData = {
     { name: 'English', level: '[ISI]' }  // TODO: isi tingkat kemampuan
   ],
 
-  /* ---------- Keahlian teknis ----------
-     TODO: tambahkan bahasa/framework spesifik yang Anda pakai
-     (mis. PHP/Laravel, JavaScript, Flutter, MySQL) pada kelompok yang sesuai. */
+  /* ---------- Keahlian teknis ---------- */
   skills: {
-    Web: ['Pengembangan website', 'Aplikasi web', '[ISI] framework/bahasa'],
-    Mobile: ['Aplikasi Android', '[ISI] framework'],
+    Web: ['Laravel', 'PHP', 'MySQL', 'Pengembangan website'],
+    Mobile: ['Kotlin', 'Aplikasi Android'],
     IoT: ['ESP32', 'Sensor suhu & pH', 'Monitoring real-time'],
     Data: ['Pengelolaan data organisasi', 'Pelaporan persediaan', 'Analisis kebutuhan sistem']
   },
@@ -112,7 +110,7 @@ const portfolioData = {
       year: '[ISI]',
       role: 'Developer',
       featured: true,
-      tech: ['[ISI]'],                   // TODO: stack teknologi aplikasi ini
+      tech: ['Kotlin', 'Android'],
       metrics: [],
       features: [
         'Pencatatan profil dan parameter setiap batch sangrai.',
@@ -121,7 +119,43 @@ const portfolioData = {
       ],
       demo: '',
       repo: '',
-      screenshot: ''                     // mis. 'assets/img/roasting.webp'
+      screenshot: ''
+    },
+    {
+      title: 'SCA Cupping',
+      description: 'Digitalisasi penilaian cita rasa kopi yang mengacu pada standar Specialty Coffee Association.',
+      category: 'Aplikasi Kopi',
+      year: '[ISI]',
+      role: 'Developer',
+      featured: false,
+      tech: ['Kotlin', 'Android'],
+      metrics: [],
+      features: [
+        'Formulir penilaian cita rasa mengikuti standar SCA.',
+        'Perhitungan skor akhir secara otomatis.',
+        'Penyimpanan hasil cupping untuk perbandingan antar sampel.'
+      ],
+      demo: '',
+      repo: '',
+      screenshot: ''
+    },
+    {
+      title: 'Defect Math',
+      description: 'Aplikasi perhitungan dan klasifikasi cacat biji kopi secara otomatis.',
+      category: 'Aplikasi Kopi',
+      year: '[ISI]',
+      role: 'Developer',
+      featured: false,
+      tech: ['Kotlin', 'Android'],
+      metrics: [],
+      features: [
+        'Input temuan cacat per kategori.',
+        'Perhitungan dan klasifikasi cacat secara otomatis.',
+        'Ringkasan hasil sebagai dasar penilaian mutu biji.'
+      ],
+      demo: '',
+      repo: '',
+      screenshot: ''
     },
     {
       title: 'Inventaris Madaya Cafe Ops',
@@ -130,12 +164,30 @@ const portfolioData = {
       year: '[ISI]',
       role: 'Developer',
       featured: false,
-      tech: ['[ISI]'],
+      tech: ['Kotlin', 'Android'],
       metrics: [],
       features: [
         'Pengelolaan stok dan kartu persediaan.',
         'Pencatatan barang masuk dan keluar.',
         'Laporan persediaan untuk kebutuhan operasional.'
+      ],
+      demo: '',
+      repo: '',
+      screenshot: ''
+    },
+    {
+      title: 'Monitoring Fermentasi ESP32',
+      description: 'Sistem pemantauan suhu dan pH proses fermentasi kopi berbasis ESP32, terbaca real-time lewat perangkat Android.',
+      category: 'IoT',
+      year: '[ISI]',
+      role: 'Developer IoT',
+      featured: true,
+      tech: ['Kotlin', 'Android', 'ESP32'],
+      metrics: [],
+      features: [
+        'Pembacaan sensor suhu dan pH pada tangki fermentasi.',
+        'Pengiriman data real-time dari ESP32 ke aplikasi Android.',
+        'Pemantauan proses fermentasi tanpa harus berada di lokasi.'
       ],
       demo: '',
       repo: '',
@@ -148,7 +200,7 @@ const portfolioData = {
       year: '[ISI]',
       role: 'Developer',
       featured: false,
-      tech: ['[ISI]'],
+      tech: ['Kotlin', 'Android'],
       metrics: [],
       features: [
         '[ISI] Fitur utama 1.',
@@ -166,7 +218,7 @@ const portfolioData = {
       year: '[ISI]',
       role: 'Developer',
       featured: false,
-      tech: ['[ISI]'],
+      tech: ['Kotlin', 'Android'],
       metrics: [],
       features: [
         '[ISI] Fitur utama 1.',
@@ -184,7 +236,7 @@ const portfolioData = {
       year: '[ISI]',
       role: 'Web Developer',
       featured: false,
-      tech: ['[ISI]'],
+      tech: ['Laravel', 'PHP', 'MySQL'],
       metrics: [],
       features: [
         'Halaman profil dan informasi usaha.',
@@ -192,6 +244,42 @@ const portfolioData = {
         '[ISI] Fitur utama lainnya.'
       ],
       demo: 'https://madayasinjai.com',
+      repo: '',
+      screenshot: ''
+    },
+    {
+      title: 'Rialau Project',
+      description: 'Website untuk RialauProject, dikerjakan selama masa kontrak sebagai web dan app developer.',
+      category: 'Website',
+      year: '[ISI]',
+      role: 'Web Developer',
+      featured: false,
+      tech: ['Laravel', 'PHP', 'MySQL'],
+      metrics: [],
+      features: [
+        '[ISI] Fitur utama 1.',
+        '[ISI] Fitur utama 2.',
+        '[ISI] Fitur utama 3.'
+      ],
+      demo: 'https://rialauproject.com',
+      repo: '',
+      screenshot: ''
+    },
+    {
+      title: 'Portal SMAN 14 Sinjai',
+      description: 'Portal web untuk SMAN 14 Sinjai sebagai kanal informasi sekolah.',
+      category: 'Website',
+      year: '[ISI]',
+      role: 'Web Developer',
+      featured: false,
+      tech: ['Laravel', 'PHP', 'MySQL'],
+      metrics: [],
+      features: [
+        '[ISI] Fitur utama 1.',
+        '[ISI] Fitur utama 2.',
+        '[ISI] Fitur utama 3.'
+      ],
+      demo: 'https://portalsman14sinjai.com',
       repo: '',
       screenshot: ''
     }

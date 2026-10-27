@@ -50,6 +50,21 @@ Default form membuka `mailto:`. Untuk POST JSON, isi `site.formEndpoint` di `dat
 - [x] Diverifikasi di Chromium: tema gelap/terang, 1440px dan 390px, tanpa error konsol.
 - [ ] Ganti seluruh `[ISI]` dan domain contoh sebelum deploy.
 
+## Bahasa, tema, dan logo
+Tombol di navbar: **ID/EN** untuk bahasa, **◍** untuk warna tema (ungu atau merah), dan **☾/☀**
+untuk terang/gelap. Ketiganya tersimpan di `localStorage` dan dipulihkan sebelum halaman digambar,
+jadi tidak ada kedipan saat dimuat ulang.
+
+Teks antarmuka ada di `assets/js/i18n.js` (dua bahasa, kuncinya harus sama persis di `id` dan `en`).
+Teks konten ada di `data.js`, ditulis `t('Indonesia', 'English')`; string biasa dipakai apa adanya
+untuk kedua bahasa (cocok untuk nama, kode, dan angka).
+
+Warna tema diatur lewat atribut `data-accent` pada `<html>`: `violet` (bawaan) atau `crimson`.
+Palet keduanya ada di `assets/css/style.css`.
+
+Logo ada di `assets/img/logo.svg` (dan disalin inline di `app.js` untuk navbar, memakai
+`currentColor` sehingga ikut warna tema). Favicon di `assets/img/favicon.svg`.
+
 ## Kartu lanyard 3D (bagian "Tentang saya")
 Kartu identitas yang menggantung adalah port vanilla dari komponen React Bits `<Lanyard />`
 (`assets/js/lanyard.js`), karena situs ini tanpa React dan tanpa build step. Dimuat sebagai ES

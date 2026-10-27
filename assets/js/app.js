@@ -7,6 +7,27 @@
 
   const d = window.portfolioData;
   if (!d) { console.error('portfolioData tidak ditemukan. Pastikan data.js dimuat lebih dulu.'); return; }
+  const STRINGS = window.translations || { id: {}, en: {} };
+
+  const LANGS = ['id', 'en'];
+  const readLang = () => {
+    try {
+      const saved = localStorage.getItem('lang');
+      if (LANGS.includes(saved)) return saved;
+    } catch (e) { }
+    return (navigator.language || 'id').toLowerCase().startsWith('en') ? 'en' : 'id';
+  };
+  let lang = readLang();
+  const REPAINT = [];
+
+  /* Teks konten: t({id,en}) -> string bahasa aktif. String biasa dibiarkan apa adanya. */
+  const tx = (v) => (v && typeof v === 'object' && 'id' in v) ? (v[lang] ?? v.id) : (v ?? '');
+  /* Teks antarmuka berdasarkan kunci, dengan pengganti {nama}. */
+  const ui = (key, vars) => {
+    let out = STRINGS[lang]?.[key] ?? STRINGS.id?.[key] ?? key;
+    if (vars) for (const k in vars) out = out.replaceAll(`{${k}}`, vars[k]);
+    return out;
+  };
 
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -15,6 +36,11 @@
   ));
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const initials = d.site.name.trim().split(/\s+/).map((w) => w[0]).slice(0, 2).join('').toUpperCase();
+  const LOGO = '<svg viewBox="0 0 200 200" aria-hidden="true" fill="none" stroke="currentColor"'
+    + ' stroke-width="8" stroke-linejoin="miter">'
+    + '<path d="M100 16 184 100 100 184 16 100Z"/><circle cx="100" cy="100" r="70"/>'
+    + '<circle cx="75" cy="75" r="35"/><circle cx="125" cy="75" r="35"/>'
+    + '<circle cx="125" cy="125" r="35"/><circle cx="75" cy="125" r="35"/></svg>';
   const origin = `https://${d.site.domain}`;
 
   /* ---------------- Ikon ---------------- */
@@ -70,32 +96,35 @@
   };
 
   /* ---------------- Head: judul & structured data ---------------- */
-  document.title = `${d.site.name} — ${d.site.role}`;
+  const paintTitle = () => { document.title = `${d.site.name} — ${tx(d.site.role)}`; };
+  paintTitle();
   const ld = $('#ld-person');
   if (ld) {
     ld.textContent = JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Person',
       name: d.site.name,
-      jobTitle: d.site.role,
-      description: d.about,
+      jobTitle: tx(d.site.role),
+      description: tx(d.about),
       email: `mailto:${d.site.email}`,
       url: `${origin}/`,
-      address: { '@type': 'PostalAddress', addressLocality: d.site.location },
+      address: { '@type': 'PostalAddress', addressLocality: tx(d.site.location) },
       sameAs: [d.site.linkedin, d.site.github, d.site.instagram].filter(Boolean)
     });
   }
 
   /* ---------------- Navigasi ---------------- */
   $('#brand').textContent = d.site.name;
-  $('#brand-mark').textContent = initials;
+  $('#brand-mark').innerHTML = LOGO;
   $('#brand-footer').textContent = d.site.name;
 
-  const NAV = [
-    ['Tentang', 'about'], ['Keahlian', 'skills'], ['Proyek', 'projects'],
-    ['Perjalanan', 'journey'], ['Kontak', 'contact']
-  ];
-  $('#nav-links').innerHTML = NAV.map(([label, id]) => `<a href="#${id}">${label}</a>`).join('');
+  const NAV = [['nav.about', 'about'], ['nav.skills', 'skills'], ['nav.projects', 'projects'],
+               ['nav.journey', 'journey'], ['nav.contact', 'contact']];
+  const paintNav = () => {
+    $('#nav-links').innerHTML = NAV.map(([key, id]) => `<a href="#${id}">${esc(ui(key))}</a>`).join('');
+    $('#nav-links').setAttribute('aria-label', ui('nav.label'));
+    menuBtn.setAttribute('aria-label', ui('nav.menu'));
+  };
 
   const navEl = $('#nav');
   const menuBtn = $('#menu');
@@ -117,7 +146,7 @@
   const themeIcon = $('#theme-icon');
   const paintTheme = (t) => {
     themeBtn.setAttribute('aria-pressed', String(t === 'dark'));
-    themeBtn.setAttribute('aria-label', t === 'dark' ? 'Ganti ke tema terang' : 'Ganti ke tema gelap');
+    themeBtn.setAttribute('aria-label', ui(t === 'dark' ? 'theme.toLight' : 'theme.toDark'));
     themeIcon.textContent = t === 'dark' ? '☾' : '☀';
   };
   paintTheme(document.documentElement.dataset.theme);
@@ -130,20 +159,25 @@
 
   /* ---------------- Hero ---------------- */
   $('#hero-name').textContent = d.site.name;
-  $('#hero-role').textContent = d.site.role;
-  $('#tagline').textContent = d.site.tagline;
+  const paintHero = () => {
+    $('#hero-role').textContent = tx(d.site.role);
+    $('#tagline').textContent = tx(d.site.tagline);
+  };
+  paintHero();
   $('#initials').textContent = initials;
 
   const statusBadge = $('#status-badge');
   if (d.site.availableText || d.site.busyText) {
-    $('#status-text').textContent = d.site.available ? d.site.availableText : d.site.busyText;
+    $('#status-text').textContent = tx(d.site.available ? d.site.availableText : d.site.busyText);
     statusBadge.hidden = false;
     if (!d.site.available) $('.dot', statusBadge).style.background = 'var(--fuchsia)';
   }
 
-  $('#meta-location').innerHTML = `${ICON.pin}${esc(d.site.location)}`;
+  const paintMeta = () => {
+    $('#meta-location').innerHTML = `${ICON.pin}${esc(tx(d.site.location))}`;
+    $('#meta-projects').innerHTML = `${ICON.spark}${esc(ui('hero.count', { n: d.projects.length }))}`;
+  };
   if (d.site.timezone) $('#meta-timezone').innerHTML = `${ICON.clock}${esc(d.site.timezone)}`;
-  $('#meta-projects').innerHTML = `${ICON.spark}${d.projects.length} proyek terpilih`;
 
   if (d.site.cv) {
     const cv = $('#cv-link');
@@ -153,7 +187,7 @@
 
   // Foto profil (hero + kartu tentang)
   if (d.site.profilePhoto) {
-    const alt = `Foto ${d.site.name}`;
+    const alt = ui('photo.alt', { name: d.site.name });
     $('#portrait-frame').innerHTML = `<img src="${esc(d.site.profilePhoto)}" alt="${esc(alt)}" width="800" height="1000" fetchpriority="high">`;
     if (d.site.photoCutout) $('#portrait').classList.add('cutout');
   }
@@ -166,14 +200,20 @@
 
   // Marquee: daftar digandakan supaya animasinya menyambung (CSS menggeser -50%)
   if (d.marquee?.length) {
-    const items = d.marquee.map((t) => `<span>${esc(t)}</span>`).join('');
-    $('#marquee').innerHTML = items + items;
+    const paintMarquee = () => {
+      const items = d.marquee.map((m) => `<span>${esc(tx(m))}</span>`).join('');
+      $('#marquee').innerHTML = items + items;
+    };
+    paintMarquee();
+    REPAINT.push(paintMarquee);
   }
 
   /* ---------------- Tentang ---------------- */
-  $('#about-text').textContent = d.about;
-  $('#about-points').innerHTML = (d.aboutPoints || []).map((p) => `<li>${esc(p)}</li>`).join('');
-  $('#about-tags').innerHTML = Object.keys(d.skills || {}).map((k) => `<span class="tag">${esc(k)}</span>`).join('');
+  const paintAbout = () => {
+    $('#about-text').textContent = tx(d.about);
+    $('#about-points').innerHTML = (d.aboutPoints || []).map((p) => `<li>${esc(tx(p))}</li>`).join('');
+    $('#about-tags').innerHTML = Object.values(d.skills || {}).map((g) => `<span class="tag">${esc(tx(g.label))}</span>`).join('');
+  };
 
   /* Panel kartu "About me" - urutan sesuai referensi:
      Contact, Education, Technical skill, Soft skill, Skill set, Interest, Language. */
@@ -184,7 +224,7 @@
       ${when ? `<span class="when">${esc(when)}</span>` : ''}
     </div>`).join('');
 
-  const tagList = (items) => `<div class="tags">${(items || []).map((t) => `<span class="tag">${esc(t)}</span>`).join('')}</div>`;
+  const tagList = (items) => `<div class="tags">${(items || []).map((i) => `<span class="tag">${esc(tx(i))}</span>`).join('')}</div>`;
 
   const panel = (title, chip, body) => `
     <div class="panel">
@@ -198,41 +238,49 @@
     return `<div class="tool" title="${esc(t.name)}">${icon}<span class="tool-name">${esc(t.name)}</span></div>`;
   }).join('');
 
-  const softBars = (d.softSkills || []).map((sk) => `
+  const softBars = () => (d.softSkills || []).map((sk) => `
     <div class="bar">
-      <div class="bar-top"><span>${esc(sk.name)}</span><span>${+sk.level}%</span></div>
-      <div class="bar-track" role="img" aria-label="${esc(sk.name)}: ${+sk.level} dari 100">
+      <div class="bar-top"><span>${esc(tx(sk.name))}</span><span>${+sk.level}%</span></div>
+      <div class="bar-track" role="img" aria-label="${esc(ui('scale.of', { name: tx(sk.name), v: +sk.level }))}">
         <div class="bar-fill" data-level="${+sk.level}"></div>
       </div>
     </div>`).join('');
 
-  $('#about-panels').innerHTML = [
-    panel('Contact', 'Jalur langsung', rows([
-      ['Email', d.site.email, '', `mailto:${d.site.email}`],
-      ['WhatsApp', `+${d.site.whatsapp}`, '', `https://wa.me/${d.site.whatsapp}`],
-      ...(d.site.linkedin ? [['LinkedIn', 'Profil', '', d.site.linkedin]] : []),
-      ['Lokasi', d.site.location, d.site.timezone || '']
-    ])),
-    panel('Education', 'Pendidikan', rows((d.education || []).map((e) => [e.place, e.position, e.period]))),
-    panel('Technical skill', 'Tools', `<div class="tool-grid">${toolTiles}</div>`),
-    panel('Soft skill', 'Kolaborasi', softBars),
-    panel('Skill set', `${(d.skillSet || []).length} item`, tagList(d.skillSet)),
-    panel('Interest', 'Minat', tagList(d.interests)),
-    panel('Language', 'Bahasa', rows((d.languages || []).map((l) => [l.name, l.level || ''])))
-  ].join('');
+  const paintPanels = () => {
+    $('#about-panels').innerHTML = [
+      panel(ui('panel.contact'), ui('panel.contact.chip'), rows([
+        [ui('row.email'), d.site.email, '', `mailto:${d.site.email}`],
+        [ui('row.whatsapp'), `+${d.site.whatsapp}`, '', `https://wa.me/${d.site.whatsapp}`],
+        ...(d.site.linkedin ? [[ui('row.linkedin'), ui('row.profile'), '', d.site.linkedin]] : []),
+        [ui('row.location'), tx(d.site.location), d.site.timezone || '']
+      ])),
+      panel(ui('panel.education'), ui('panel.education.chip'),
+            rows((d.education || []).map((e) => [tx(e.place), tx(e.position), tx(e.period)]))),
+      panel(ui('panel.technical'), ui('panel.technical.chip'), `<div class="tool-grid">${toolTiles}</div>`),
+      panel(ui('panel.soft'), ui('panel.soft.chip'), softBars()),
+      panel(ui('panel.skillset'), ui('item.count', { n: (d.skillSet || []).length }), tagList(d.skillSet)),
+      panel(ui('panel.interest'), ui('panel.interest.chip'), tagList(d.interests)),
+      panel(ui('panel.language'), ui('panel.language.chip'),
+            rows((d.languages || []).map((l) => [tx(l.name), tx(l.level) || ''])))
+    ].join('');
+  };
 
-  $('#stats').innerHTML = d.stats.map((s) => `
+  const paintStats = () => {
+    $('#stats').innerHTML = d.stats.map((s) => `
     <div class="stat reveal">
       <b data-value="${+s.value}" data-suffix="${esc(s.suffix || '')}">0${esc(s.suffix || '')}</b>
-      <span>${esc(s.label)}</span>
+      <span>${esc(tx(s.label))}</span>
     </div>`).join('');
+  };
 
   /* ---------------- Keahlian ---------------- */
-  $('#skills-grid').innerHTML = Object.entries(d.skills).map(([group, items]) => `
+  const paintSkills = () => {
+    $('#skills-grid').innerHTML = Object.values(d.skills).map((g) => `
     <div class="panel">
-      <h3>${esc(group)} <span class="chip">${items.length} item</span></h3>
-      <div class="tags">${items.map((i) => `<span class="tag">${esc(i)}</span>`).join('')}</div>
+      <h3>${esc(tx(g.label))} <span class="chip">${esc(ui('item.count', { n: g.items.length }))}</span></h3>
+      ${tagList(g.items)}
     </div>`).join('');
+  };
 
   /* ---------------- Proyek ---------------- */
   // Mock UI dipakai sebagai pengganti screenshot agar kartu tidak kosong.
@@ -249,39 +297,49 @@
     </div>`.replace(/__/g, () => 30 + Math.round(Math.random() * 65));
 
   const shot = (p) => p.screenshot
-    ? `<img src="${esc(p.screenshot)}" alt="Tampilan proyek ${esc(p.title)}" width="1200" height="750" loading="lazy" decoding="async">`
+    ? `<img src="${esc(p.screenshot)}" alt="${esc(ui('shot.alt', { title: tx(p.title) }))}" width="1200" height="750" loading="lazy" decoding="async">`
     : mock();
 
-  $('#project-grid').innerHTML = d.projects.map((p, i) => `
-    <article class="project reveal${p.featured ? ' is-feature' : ''}" data-index="${i}" data-category="${esc(p.category)}"
-             tabindex="0" role="button" aria-label="Lihat detail proyek ${esc(p.title)}">
+  const paintProjects = () => {
+    $('#project-grid').innerHTML = d.projects.map((p, i) => `
+    <article class="project reveal${p.featured ? ' is-feature' : ''}" data-index="${i}" data-category="${esc(p.category.id ?? p.category)}"
+             tabindex="0" role="button" aria-label="${esc(ui('projects.open', { title: tx(p.title) }))}">
       <div class="shot">${shot(p)}</div>
       <div class="project-body">
         <div class="project-top">
-          <h3>${esc(p.title)}</h3>
-          <span class="pill">${esc(p.category)}</span>
+          <h3>${esc(tx(p.title))}</h3>
+          <span class="pill">${esc(tx(p.category))}</span>
         </div>
-        <p>${esc(p.description)}</p>
-        ${p.metrics?.length ? `<div class="metrics">${p.metrics.map((m) => `<div><b>${esc(m.value)}</b>${esc(m.label)}</div>`).join('')}</div>` : ''}
-        <div class="tags">${p.tech.map((t) => `<span class="tag">${esc(t)}</span>`).join('')}</div>
+        <p>${esc(tx(p.description))}</p>
+        ${p.metrics?.length ? `<div class="metrics">${p.metrics.map((m) => `<div><b>${esc(m.value)}</b>${esc(tx(m.label))}</div>`).join('')}</div>` : ''}
+        ${tagList(p.tech)}
         <div class="project-foot">
-          <span class="link-btn">Detail ${ICON.arrow}</span>
+          <span class="link-btn">${esc(ui('projects.detail'))} ${ICON.arrow}</span>
           ${p.demo ? `<a class="link-btn" href="${esc(p.demo)}" target="_blank" rel="noopener" data-stop>Demo</a>` : ''}
           ${p.repo ? `<a class="link-btn" href="${esc(p.repo)}" target="_blank" rel="noopener" data-stop>GitHub</a>` : ''}
         </div>
       </div>
     </article>`).join('');
+  };
 
   /* Filter kategori */
-  const ALL = 'Semua';
-  const cats = [ALL, ...new Set(d.projects.map((p) => p.category))];
-  $('#filters').innerHTML = cats.map((c) => `<button type="button" class="filter" aria-pressed="${c === ALL}" data-filter="${esc(c)}">${esc(c)}</button>`).join('');
+  const ALL = '__all__';
+  const catKey = (c) => c?.id ?? c;
+  const cats = [...new Map(d.projects.map((p) => [catKey(p.category), p.category])).entries()];
+  let currentFilter = ALL;
+  const paintFilters = (active = ALL) => {
+    $('#filters').setAttribute('aria-label', ui('projects.filterLabel'));
+    $('#filters').innerHTML = [[ALL, ui('projects.all')], ...cats.map(([k, c]) => [k, tx(c)])]
+      .map(([key, label]) => `<button type="button" class="filter" aria-pressed="${key === active}" data-filter="${esc(key)}">${esc(label)}</button>`).join('');
+  };
 
   function applyFilter(value, updateHash = true) {
-    const v = cats.includes(value) ? value : ALL;
+    const v = cats.some(([k]) => k === value) ? value : ALL;
+    currentFilter = v;
     $$('#filters .filter').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === v)));
     $$('.project').forEach((card) => { card.hidden = v !== ALL && card.dataset.category !== v; });
     $('#empty').hidden = $$('.project:not([hidden])').length > 0;
+    $('#empty').textContent = ui('projects.empty');
     if (updateHash) {
       const hash = v === ALL ? '#projects' : `#projects?kategori=${encodeURIComponent(v)}`;
       history.replaceState(null, '', location.pathname + hash);
@@ -294,7 +352,7 @@
   });
 
   if (location.hash.includes('kategori=')) {
-    applyFilter(decodeURIComponent(location.hash.split('kategori=')[1] || ''), false);
+    currentFilter = decodeURIComponent(location.hash.split('kategori=')[1] || '');
   }
 
   /* Dialog detail proyek */
@@ -302,16 +360,16 @@
   const openSheet = (i) => {
     const p = d.projects[i];
     if (!p) return;
-    $('#sheet-category').textContent = [p.category, p.year, p.role].filter(Boolean).join(' · ');
-    $('#sheet-title').textContent = p.title;
+    $('#sheet-category').textContent = [tx(p.category), p.year, tx(p.role)].filter(Boolean).join(' · ');
+    $('#sheet-title').textContent = tx(p.title);
     $('#sheet-body').innerHTML = `
-      <p class="muted">${esc(p.description)}</p>
-      ${p.features?.length ? `<div><h4>Fitur utama</h4><ul class="feature-list">${p.features.map((f) => `<li>${esc(f)}</li>`).join('')}</ul></div>` : ''}
-      ${p.metrics?.length ? `<div><h4>Hasil</h4><div class="metrics">${p.metrics.map((m) => `<div><b>${esc(m.value)}</b>${esc(m.label)}</div>`).join('')}</div></div>` : ''}
-      <div><h4>Teknologi</h4><div class="tags">${p.tech.map((t) => `<span class="tag">${esc(t)}</span>`).join('')}</div></div>
+      <p class="muted">${esc(tx(p.description))}</p>
+      ${p.features?.length ? `<div><h4>${esc(ui('sheet.features'))}</h4><ul class="feature-list">${p.features.map((f) => `<li>${esc(tx(f))}</li>`).join('')}</ul></div>` : ''}
+      ${p.metrics?.length ? `<div><h4>${esc(ui('sheet.results'))}</h4><div class="metrics">${p.metrics.map((m) => `<div><b>${esc(m.value)}</b>${esc(tx(m.label))}</div>`).join('')}</div></div>` : ''}
+      <div><h4>${esc(ui('sheet.tech'))}</h4>${tagList(p.tech)}</div>
       <div class="actions" style="margin-top:.2rem">
-        ${p.demo ? `<a class="button" href="${esc(p.demo)}" target="_blank" rel="noopener">${ICON.link}Buka demo</a>` : ''}
-        ${p.repo ? `<a class="button alt" href="${esc(p.repo)}" target="_blank" rel="noopener">Lihat kode</a>` : ''}
+        ${p.demo ? `<a class="button" href="${esc(p.demo)}" target="_blank" rel="noopener">${ICON.link}${esc(ui('sheet.demo'))}</a>` : ''}
+        ${p.repo ? `<a class="button alt" href="${esc(p.repo)}" target="_blank" rel="noopener">${esc(ui('sheet.code'))}</a>` : ''}
       </div>`;
     if (typeof sheet.showModal === 'function') sheet.showModal(); else sheet.setAttribute('open', '');
     $('#sheet-close').focus();
@@ -338,39 +396,40 @@
   /* ---------------- Perjalanan ---------------- */
   const timeline = (items) => items.map((x) => `
     <div class="tl-item">
-      <h3>${esc(x.position)}</h3>
-      <p class="where">${esc(x.place)}</p>
-      <p class="when">${esc(x.period)}</p>
-      <ul>${(x.points || []).map((p) => `<li>${esc(p)}</li>`).join('')}</ul>
+      <h3>${esc(tx(x.position))}</h3>
+      <p class="where">${esc(tx(x.place))}</p>
+      <p class="when">${esc(tx(x.period))}</p>
+      <ul>${(x.points || []).map((p) => `<li>${esc(tx(p))}</li>`).join('')}</ul>
     </div>`).join('');
 
-  $('#experience').innerHTML = timeline(d.experience || []);
-  $('#education').innerHTML = timeline(d.education || []);
+  const paintJourney = () => {
+    $('#experience').innerHTML = timeline(d.experience || []);
+    $('#education').innerHTML = timeline(d.education || []);
+  };
 
   /* ---------------- Sertifikat ---------------- */
-  if (d.certificates?.length) {
+  const paintCerts = () => {
+    if (!d.certificates?.length) { $('#certificates').hidden = true; return; }
     $('#cert-grid').innerHTML = d.certificates.map((c) => {
-      const inner = `<i aria-hidden="true">${ICON.award}</i><span><b>${esc(c.name)}</b><small>${esc(c.issuer)} · ${esc(c.year)}</small></span>`;
+      const inner = `<i aria-hidden="true">${ICON.award}</i><span><b>${esc(tx(c.name))}</b><small>${esc(tx(c.issuer))} · ${esc(tx(c.year))}</small></span>`;
       return c.url
         ? `<a class="cert" href="${esc(c.url)}" target="_blank" rel="noopener">${inner}</a>`
         : `<article class="cert">${inner}</article>`;
     }).join('');
-  } else {
-    $('#certificates').hidden = true;
-  }
+  };
 
   /* ---------------- Kontak ---------------- */
   $('#email-link').href = `mailto:${d.site.email}`;
   $('#wa-link').href = `https://wa.me/${d.site.whatsapp}`;
 
-  const contactRows = [
-    [ICON.mail, 'Email', d.site.email, `mailto:${d.site.email}`],
-    [ICON.chat, 'WhatsApp', `+${d.site.whatsapp}`, `https://wa.me/${d.site.whatsapp}`],
-    [ICON.link, 'LinkedIn', 'Profil profesional', d.site.linkedin],
-    [ICON.link, 'GitHub', 'Repositori & kode', d.site.github]
+  const contactRows = () => [
+    [ICON.mail, ui('row.email'), d.site.email, `mailto:${d.site.email}`],
+    [ICON.chat, ui('row.whatsapp'), `+${d.site.whatsapp}`, `https://wa.me/${d.site.whatsapp}`],
+    [ICON.link, ui('row.linkedin'), ui('row.profile'), d.site.linkedin],
+    [ICON.link, ui('row.github'), ui('row.repo'), d.site.github]
   ].filter((r) => r[3]);
 
-  $('#contact-list').innerHTML = contactRows.map(([icon, label, value, href]) => `
+  const paintContact = () => $('#contact-list').innerHTML = contactRows().map(([icon, label, value, href]) => `
     <li><i aria-hidden="true">${icon}</i>
       <span><a href="${esc(href)}"${href.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${esc(value)}</a>
       <small>${esc(label)}</small></span>
@@ -385,7 +444,7 @@
     formError.classList.remove('ok');
 
     if (!form.checkValidity()) {
-      formError.textContent = 'Mohon isi nama, email yang valid, dan pesan minimal 10 karakter.';
+      formError.textContent = ui('form.invalid');
       form.reportValidity();
       return;
     }
@@ -395,15 +454,15 @@
     // Tanpa endpoint: buka email client.
     if (!d.site.formEndpoint) {
       const body = `${payload.name}\n${payload.email}\n\n${payload.message}`;
-      formError.textContent = 'Membuka aplikasi email Anda…';
+      formError.textContent = ui('form.opening');
       formError.classList.add('ok');
-      location.href = `mailto:${d.site.email}?subject=${encodeURIComponent('Pesan dari website')}&body=${encodeURIComponent(body)}`;
+      location.href = `mailto:${d.site.email}?subject=${encodeURIComponent(ui('form.subject'))}&body=${encodeURIComponent(body)}`;
       return;
     }
 
     // Dengan endpoint: POST JSON.
     submitBtn.disabled = true;
-    formError.textContent = 'Mengirim…';
+    formError.textContent = ui('form.sending');
     try {
       const res = await fetch(d.site.formEndpoint, {
         method: 'POST',
@@ -412,10 +471,10 @@
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       form.reset();
-      formError.textContent = 'Terima kasih! Pesan Anda sudah terkirim.';
+      formError.textContent = ui('form.sent');
       formError.classList.add('ok');
     } catch (err) {
-      formError.textContent = 'Gagal mengirim. Coba lagi atau hubungi saya lewat WhatsApp/email.';
+      formError.textContent = ui('form.failed');
       console.error(err);
     } finally {
       submitBtn.disabled = false;
@@ -428,6 +487,71 @@
   ].filter(([url]) => url)
     .map(([url, label]) => `<a href="${esc(url)}" target="_blank" rel="noopener">${label}</a>`).join('');
   $('#year').textContent = new Date().getFullYear();
+
+  /* ---------------- Bahasa & warna tema ---------------- */
+  const langBtn = $('#lang');
+  const accentBtn = $('#accent');
+
+  const paintLangBtn = () => {
+    langBtn.setAttribute('aria-label', ui('lang.label'));
+    langBtn.innerHTML = LANGS
+      .map((l) => `<span class="${l === lang ? 'on' : ''}">${l.toUpperCase()}</span>`)
+      .join('<i aria-hidden="true">/</i>');
+  };
+
+  /* Teks statis di HTML ditandai data-i18n (isi) dan data-i18n-label (aria-label). */
+  const paintStatic = () => {
+    $$('[data-i18n]').forEach((el) => { el.textContent = ui(el.dataset.i18n); });
+    $$('[data-i18n-label]').forEach((el) => { el.setAttribute('aria-label', ui(el.dataset.i18nLabel)); });
+  };
+
+  const RENDER = [paintTitle, paintNav, paintHero, paintMeta, paintAbout, paintPanels, paintStats,
+                  paintSkills, paintProjects, paintJourney, paintCerts, paintContact,
+                  paintStatic, paintLangBtn];
+
+  const renderAll = () => {
+    document.documentElement.lang = lang;
+    RENDER.forEach((fn) => fn());
+    REPAINT.forEach((fn) => fn());
+    paintFilters(currentFilter);
+    applyFilter(currentFilter, false);
+    paintTheme(document.documentElement.dataset.theme);
+    if (d.site.available !== undefined) {
+      $('#status-text').textContent = tx(d.site.available ? d.site.availableText : d.site.busyText);
+    }
+  };
+
+  langBtn.addEventListener('click', () => {
+    lang = LANGS[(LANGS.indexOf(lang) + 1) % LANGS.length];
+    try { localStorage.setItem('lang', lang); } catch (e) { }
+    renderAll();
+    document.dispatchEvent(new CustomEvent('langchange', { detail: { lang } }));
+    $$('.reveal').forEach((el) => el.classList.add('in'));
+    $$('.bar-fill').forEach((b) => { b.style.width = `${b.dataset.level}%`; });
+    $$('[data-value]').forEach((n) => { n.textContent = n.dataset.value + (n.dataset.suffix || ''); });
+  });
+
+  const ACCENTS = ['violet', 'crimson'];
+  const readAccent = () => {
+    try {
+      const saved = localStorage.getItem('accent');
+      if (ACCENTS.includes(saved)) return saved;
+    } catch (e) { }
+    return 'violet';
+  };
+  const paintAccent = (a) => {
+    document.documentElement.dataset.accent = a;
+    accentBtn.setAttribute('aria-label', ui('accent.label'));
+    accentBtn.setAttribute('aria-pressed', String(a === 'crimson'));
+  };
+  paintAccent(readAccent());
+  accentBtn.addEventListener('click', () => {
+    const next = document.documentElement.dataset.accent === 'crimson' ? 'violet' : 'crimson';
+    try { localStorage.setItem('accent', next); } catch (e) { }
+    paintAccent(next);
+  });
+
+  renderAll();
 
   /* ---------------- Animasi saat tampil ---------------- */
   const countUp = (el) => {

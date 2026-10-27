@@ -11,6 +11,10 @@
       try { t = localStorage.getItem('theme'); } catch (e) { }
       document.documentElement.dataset.theme =
         t || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      var a = null, l = null;
+      try { a = localStorage.getItem('accent'); l = localStorage.getItem('lang'); } catch (e) { }
+      document.documentElement.dataset.accent = (a === 'crimson') ? 'crimson' : 'violet';
+      if (l === 'id' || l === 'en') document.documentElement.lang = l;
     })();
   </script>
 
@@ -48,7 +52,10 @@
 </head>
 
 <body>
-  <a class="skip" href="#main">Lewati ke konten</a>
+  <!-- Pita cahaya aurora, murni dekoratif. -->
+  <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+
+  <a class="skip" href="#main" data-i18n="skip">Lewati ke konten</a>
 
   <!-- ============ Navigasi ============ -->
   <header class="nav" id="nav">
@@ -61,6 +68,10 @@
       <nav id="nav-links" class="nav-links" aria-label="Navigasi utama"></nav>
 
       <div class="nav-tools">
+        <button class="icon-btn lang-btn" id="lang" type="button" aria-label="Ganti bahasa"></button>
+        <button class="icon-btn" id="accent" type="button" aria-label="Ganti warna tema" aria-pressed="false">
+          <span aria-hidden="true">◍</span>
+        </button>
         <button class="icon-btn" id="theme" type="button" aria-label="Ganti tema" aria-pressed="false">
           <span id="theme-icon" aria-hidden="true">◐</span>
         </button>
@@ -76,7 +87,7 @@
       <div class="hero-grid">
         <div>
           <p class="badge" id="status-badge" hidden><span class="dot" aria-hidden="true"></span><span id="status-text"></span></p>
-          <h1><span id="hero-hello">Hai, saya</span> <span class="grad" id="hero-name"></span></h1>
+          <h1><span id="hero-hello" data-i18n="hero.hello">Hai, saya</span> <span class="grad" id="hero-name"></span></h1>
           <p class="eyebrow" id="hero-role"></p>
           <p class="tagline" id="tagline"></p>
           <div class="hero-meta">
@@ -85,9 +96,9 @@
             <span id="meta-projects"></span>
           </div>
           <div class="actions">
-            <a class="button" href="#projects">Lihat proyek</a>
-            <a class="button alt" id="cv-link" download hidden>Unduh CV</a>
-            <a class="button alt" id="hero-contact" href="#contact">Hubungi saya</a>
+            <a class="button" href="#projects" data-i18n="hero.projects">Lihat proyek</a>
+            <a class="button alt" id="cv-link" download hidden data-i18n="hero.cv">Unduh CV</a>
+            <a class="button alt" id="hero-contact" href="#contact" data-i18n="hero.contact">Hubungi saya</a>
           </div>
         </div>
 
@@ -111,8 +122,8 @@
     <!-- ============ Tentang ============ -->
     <section class="section container" id="about">
       <div class="section-head reveal">
-        <p class="eyebrow">Tentang saya</p>
-        <h2>Merancang dengan tujuan.</h2>
+        <p class="eyebrow" data-i18n="about.eyebrow">Tentang saya</p>
+        <h2 data-i18n="about.title">Merancang dengan tujuan.</h2>
       </div>
 
       <div class="about-card reveal">
@@ -124,7 +135,7 @@
           </div>
           <!-- Kartu identitas 3D yang menggantung; bisa ditarik dan diklik untuk membalik. -->
           <div class="lanyard about-lanyard" id="lanyard">
-            <p class="lanyard-hint">Tarik kartunya, klik untuk membalik.</p>
+            <p class="lanyard-hint" data-i18n="lanyard.hint">Tarik kartunya, klik untuk membalik.</p>
           </div>
         </div>
 
@@ -137,9 +148,9 @@
     <!-- ============ Keahlian ============ -->
     <section class="section container" id="skills">
       <div class="section-head reveal">
-        <p class="eyebrow">Keahlian</p>
-        <h2>Tools yang saya gunakan.</h2>
-        <p>Dikelompokkan sesuai jenis pekerjaan yang paling sering saya ambil.</p>
+        <p class="eyebrow" data-i18n="skills.eyebrow">Keahlian</p>
+        <h2 data-i18n="skills.title">Tools yang saya gunakan.</h2>
+        <p data-i18n="skills.sub">Dikelompokkan sesuai jenis pekerjaan yang paling sering saya ambil.</p>
       </div>
       <div class="panel-grid skills-panels reveal" id="skills-grid"></div>
     </section>
@@ -147,32 +158,32 @@
     <!-- ============ Proyek ============ -->
     <section class="section container" id="projects">
       <div class="section-head reveal">
-        <p class="eyebrow">Karya terpilih</p>
-        <h2>Proyek yang pernah dibuat.</h2>
-        <p>Klik salah satu kartu untuk melihat detail, fitur utama, dan tautannya.</p>
+        <p class="eyebrow" data-i18n="projects.eyebrow">Karya terpilih</p>
+        <h2 data-i18n="projects.title">Proyek yang pernah dibuat.</h2>
+        <p data-i18n="projects.sub">Klik salah satu kartu untuk melihat detail, fitur utama, dan tautannya.</p>
       </div>
       <!-- Galeri melengkung: tampilan tiap aplikasi, bisa digeser dan diklik untuk diperbesar. -->
-      <div class="gallery-stage reveal" id="gallery" aria-label="Galeri tampilan aplikasi"></div>
+      <div class="gallery-stage reveal" id="gallery" data-i18n-label="gallery.label" aria-label="Galeri tampilan aplikasi"></div>
       <p class="gallery-note" id="gallery-note" hidden></p>
 
       <div class="filters" id="filters" role="group" aria-label="Filter kategori proyek"></div>
       <div class="project-grid" id="project-grid"></div>
-      <p class="empty" id="empty" hidden>Tidak ada proyek pada kategori ini.</p>
+      <p class="empty" id="empty" hidden data-i18n="projects.empty">Tidak ada proyek pada kategori ini.</p>
     </section>
 
     <!-- ============ Perjalanan ============ -->
     <section class="section container" id="journey">
       <div class="section-head reveal">
-        <p class="eyebrow">Perjalanan</p>
-        <h2>Pengalaman &amp; pendidikan.</h2>
+        <p class="eyebrow" data-i18n="journey.eyebrow">Perjalanan</p>
+        <h2 data-i18n="journey.title">Pengalaman &amp; pendidikan.</h2>
       </div>
       <div class="two-col">
         <div class="reveal">
-          <p class="eyebrow">Pengalaman</p>
+          <p class="eyebrow" data-i18n="journey.experience">Pengalaman</p>
           <div class="timeline" id="experience"></div>
         </div>
         <div class="reveal">
-          <p class="eyebrow">Pendidikan</p>
+          <p class="eyebrow" data-i18n="journey.education">Pendidikan</p>
           <div class="timeline" id="education"></div>
         </div>
       </div>
@@ -181,8 +192,8 @@
     <!-- ============ Sertifikat ============ -->
     <section class="section container" id="certificates">
       <div class="section-head reveal">
-        <p class="eyebrow">Sertifikat</p>
-        <h2>Pembelajaran berkelanjutan.</h2>
+        <p class="eyebrow" data-i18n="cert.eyebrow">Sertifikat</p>
+        <h2 data-i18n="cert.title">Pembelajaran berkelanjutan.</h2>
       </div>
       <div class="cert-grid reveal" id="cert-grid"></div>
     </section>
@@ -190,13 +201,13 @@
     <!-- ============ Kontak ============ -->
     <section class="section container" id="contact">
       <div class="section-head reveal">
-        <p class="eyebrow">Kontak</p>
-        <h2>Mari membuat sesuatu.</h2>
+        <p class="eyebrow" data-i18n="contact.eyebrow">Kontak</p>
+        <h2 data-i18n="contact.title">Mari membuat sesuatu.</h2>
       </div>
 
       <div class="contact-wrap reveal">
         <div>
-          <p class="muted">Punya ide atau ingin berkolaborasi? Kirim pesan lewat form, atau pakai jalur di bawah ini.</p>
+          <p class="muted" data-i18n="contact.sub">Punya ide atau ingin berkolaborasi? Kirim pesan lewat form, atau pakai jalur di bawah ini.</p>
           <ul class="contact-list" id="contact-list"></ul>
           <div class="actions">
             <a class="button" id="wa-link" target="_blank" rel="noopener">WhatsApp</a>
@@ -205,11 +216,11 @@
         </div>
 
         <form class="form" id="contact-form" novalidate>
-          <label>Nama<input name="name" required autocomplete="name" minlength="2"></label>
-          <label>Email<input name="email" type="email" required autocomplete="email"></label>
-          <label>Pesan<textarea name="message" required minlength="10"></textarea></label>
+          <label><span data-i18n="form.name">Nama</span><input name="name" required autocomplete="name" minlength="2"></label>
+          <label><span data-i18n="form.email">Email</span><input name="email" type="email" required autocomplete="email"></label>
+          <label><span data-i18n="form.message">Pesan</span><textarea name="message" required minlength="10"></textarea></label>
           <p class="error" id="form-error" role="status" aria-live="polite"></p>
-          <button class="button" type="submit" id="form-submit">Kirim pesan</button>
+          <button class="button" type="submit" id="form-submit" data-i18n="form.submit">Kirim pesan</button>
         </form>
       </div>
     </section>
@@ -218,7 +229,7 @@
   <!-- ============ Footer ============ -->
   <footer class="footer">
     <div class="container footer-in">
-      <span>© <span id="year"></span> <span id="brand-footer">Portofolio</span>. Dibuat dengan HTML, CSS, dan JavaScript.</span>
+      <span>© <span id="year"></span> <span id="brand-footer">Portofolio</span>. <span data-i18n="footer.built">Dibuat dengan HTML, CSS, dan JavaScript.</span></span>
       <span class="socials" id="footer-socials"></span>
     </div>
   </footer>
@@ -230,11 +241,12 @@
         <p class="eyebrow" id="sheet-category"></p>
         <h3 id="sheet-title"></h3>
       </div>
-      <button class="sheet-close" id="sheet-close" type="button" aria-label="Tutup detail">✕</button>
+      <button class="sheet-close" id="sheet-close" type="button" data-i18n-label="sheet.close" aria-label="Tutup detail">✕</button>
     </div>
     <div class="sheet-body" id="sheet-body"></div>
   </dialog>
 
+  <script src="assets/js/i18n.js"></script>
   <script src="assets/js/data.js"></script>
   <script src="assets/js/app.js"></script>
   <script type="module">
@@ -278,11 +290,11 @@
         x.textAlign = 'center';
         x.fillStyle = 'rgba(167,139,250,.95)';
         x.font = '600 30px Inter, system-ui, sans-serif';
-        x.fillText(project.category.toUpperCase(), 500, 300);
+        x.fillText(String(v(project.category)).toUpperCase(), 500, 300);
 
         x.fillStyle = '#ffffff';
         x.font = '700 72px Sora, Inter, system-ui, sans-serif';
-        const words = project.title.split(' ');
+        const words = String(v(project.title)).split(' ');
         const lines = [];
         let line = '';
         for (const w of words) {
@@ -301,16 +313,19 @@
 
         x.fillStyle = 'rgba(154,143,190,.8)';
         x.font = '400 28px Inter, system-ui, sans-serif';
-        x.fillText('Tangkapan layar belum tersedia', 500, c.height - 110);
+        x.fillText((window.translations[document.documentElement.lang] || window.translations.id)['gallery.noShot'], 500, c.height - 110);
         return c.toDataURL('image/png');
       };
 
-      const items = data.projects.map(p => ({
+      const L = () => document.documentElement.lang === 'en' ? 'en' : 'id';
+      const v = x => (x && typeof x === 'object' && 'id' in x) ? (x[L()] ?? x.id) : x;
+      const buildItems = () => data.projects.map(p => ({
         image: p.screenshot || placeholder(p),
-        text: p.title,
-        description: p.description.startsWith('[ISI]') ? '' : p.description,
-        alt: `Tampilan aplikasi ${p.title}`
+        text: v(p.title),
+        description: String(v(p.description)).startsWith('[ISI]') ? '' : v(p.description),
+        alt: v(p.title)
       }));
+      const items = buildItems();
 
       const ink = () => getComputedStyle(document.documentElement).getPropertyValue('--ink').trim() || '#ffffff';
 
@@ -339,11 +354,16 @@
 
       if (gallery) {
         const note = document.getElementById('gallery-note');
-        note.textContent = 'Geser untuk menjelajah, klik kartu untuk memperbesar.';
+        const T = () => window.translations[document.documentElement.lang] || window.translations.id;
+        note.textContent = T()['gallery.hint'];
         note.hidden = false;
         // Warna judul mengikuti tema terang/gelap.
         new MutationObserver(() => gallery.update({ textColor: ink() }))
-          .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+          .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-accent'] });
+        document.addEventListener('langchange', () => {
+          note.textContent = T()['gallery.hint'];
+          gallery.update({ items: buildItems() });
+        });
       } else {
         stage.remove();
       }

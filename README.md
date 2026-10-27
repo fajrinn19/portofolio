@@ -50,7 +50,19 @@ Default form membuka `mailto:`. Untuk POST JSON, isi `site.formEndpoint` di `dat
 - [x] Diverifikasi di Chromium: tema gelap/terang, 1440px dan 390px, tanpa error konsol.
 - [ ] Ganti seluruh `[ISI]` dan domain contoh sebelum deploy.
 
+## Domain
+Sebelum deploy, ganti `GANTI-DOMAIN.vercel.app` di `index.html`, `robots.txt`, `sitemap.xml`,
+dan `site.domain` pada `assets/js/data.js`.
+
 ## Yang masih perlu diisi
-Nama tampil, role, tagline, lokasi, email, WhatsApp, LinkedIn, domain, lalu untuk tiap proyek:
-deskripsi, tahun, peran, stack teknologi, dan fitur utama. Isi `skillSet`, `interests`, dan
-`languages`. Foto profil sudah terpasang (`assets/img/profile.webp`, latar dihapus); CV belum ada.
+Identitas, riwayat, dan pelatihan sudah terisi. Yang masih bertanda `[ISI]`:
+
+- `site.whatsapp` dan `site.linkedin`, serta `site.domain` setelah deploy.
+- Stack teknologi tiap proyek (`tech`).
+- Deskripsi dan fitur aplikasi **Produksi** dan **Kasir**, tahun tiap proyek.
+- Framework/bahasa spesifik pada `skills.Web` dan `skills.Mobile`.
+- Tingkat kemampuan bahasa Inggris pada `languages`.
+- Angka `softSkills` masih penilaian diri — sesuaikan bila perlu.
+
+Foto profil sudah terpasang (`assets/img/profile.webp`, latar dihapus). CV belum ada; taruh di
+`assets/cv.pdf` lalu isi `site.cv` agar tombol unduh muncul.

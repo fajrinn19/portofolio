@@ -19,7 +19,7 @@ const portfolioData = {
       'Membangun aplikasi web, mobile, dan sistem IoT untuk industri kopi dan pengelolaan data organisasi.',
       'Building web apps, mobile apps and IoT systems for the coffee industry and organisational data.'
     ),
-    location: t('Gowa, Sulawesi Selatan', 'Gowa, South Sulawesi'), // TODO: cek
+    location: t('Makassar, Sulawesi Selatan', 'Makassar, South Sulawesi'),
     timezone: 'GMT+8',                   // WITA
     available: true,
     availableText: t('Terbuka untuk peluang baru', 'Open to new opportunities'),

@@ -101,8 +101,10 @@
   /* ---------------- Head: judul & structured data ---------------- */
   const paintTitle = () => { document.title = `${d.site.name} — ${tx(d.site.role)}`; };
   paintTitle();
-  const ld = $('#ld-person');
-  if (ld) {
+  /* Structured data ikut bahasa halaman supaya tidak bertentangan dengan isinya. */
+  const paintLd = () => {
+    const ld = $('#ld-person');
+    if (!ld) return;
     ld.textContent = JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Person',
@@ -114,7 +116,7 @@
       address: { '@type': 'PostalAddress', addressLocality: tx(d.site.location) },
       sameAs: [d.site.linkedin, d.site.github, d.site.instagram].filter(Boolean)
     });
-  }
+  };
 
   /* ---------------- Navigasi ---------------- */
   $('#brand').textContent = d.site.name;
@@ -460,7 +462,7 @@
     $$('[data-i18n-label]').forEach((el) => { el.setAttribute('aria-label', ui(el.dataset.i18nLabel)); });
   };
 
-  const RENDER = [paintTitle, paintNav, paintHero, paintMeta, paintAbout, paintPanels, paintStats,
+  const RENDER = [paintTitle, paintLd, paintNav, paintHero, paintMeta, paintAbout, paintPanels, paintStats,
                   paintSkills, paintJourney, paintCerts, paintContact,
                   paintStatic, paintLangBtn];
 

@@ -122,6 +122,10 @@
             <ul class="feature-list" id="about-points"></ul>
             <div class="tags" id="about-tags"></div>
           </div>
+          <!-- Kartu identitas 3D yang menggantung; bisa ditarik dan diklik untuk membalik. -->
+          <div class="lanyard about-lanyard" id="lanyard">
+            <p class="lanyard-hint">Tarik kartunya, klik untuk membalik.</p>
+          </div>
         </div>
 
         <div class="panel-grid" id="about-panels"></div>
@@ -229,5 +233,24 @@
 
   <script src="assets/js/data.js"></script>
   <script src="assets/js/app.js"></script>
+  <script type="module">
+    import { createLanyard } from './assets/js/lanyard.js';
+    const host = document.getElementById('lanyard');
+    const lanyard = host && createLanyard(host, {
+      frontImage: 'assets/img/card-front.png',
+      backImage: 'assets/img/card-back.png',
+      strapImage: 'assets/img/lanyard-band.png',
+      cardColor: '#15102a',
+      finish: 'glossy',
+      cornerRadius: 0.35,
+      size: 0.62,
+      strapLength: 0.42,
+      strapWidth: 0.7,
+      metal: 'silver',
+      damping: 0.55,
+      breeze: 0.4
+    });
+    if (lanyard) host.classList.add('is-live');
+  </script>
 </body>
 </html>

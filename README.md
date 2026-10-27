@@ -1,6 +1,6 @@
 # Portofolio pribadi
 
-Situs statis HTML, CSS, dan JavaScript vanilla tanpa npm/build step. Buka `index.html` langsung dari `file://` atau deploy folder ini ke Vercel sebagai **Other / No Framework** dengan output directory root.
+Situs statis HTML, CSS, dan JavaScript vanilla tanpa npm/build step. Jalankan lewat server statis apa pun (kartu lanyard 3D memakai ES module sehingga `file://` tidak cukup), atau deploy folder ini ke Vercel sebagai **Other / No Framework** dengan output directory root.
 
 ## Mengganti konten
 Semua konten berada di `assets/js/data.js`. Ganti setiap field bertanda `[ISI]` atau `// TODO: ganti`.
@@ -49,6 +49,20 @@ Default form membuka `mailto:`. Untuk POST JSON, isi `site.formEndpoint` di `dat
 - [x] Gaya cetak: latar dekoratif dimatikan agar halaman tetap terbaca.
 - [x] Diverifikasi di Chromium: tema gelap/terang, 1440px dan 390px, tanpa error konsol.
 - [ ] Ganti seluruh `[ISI]` dan domain contoh sebelum deploy.
+
+## Kartu lanyard 3D (bagian "Tentang saya")
+Kartu identitas yang menggantung adalah port vanilla dari komponen React Bits `<Lanyard />`
+(`assets/js/lanyard.js`), karena situs ini tanpa React dan tanpa build step. Dimuat sebagai ES
+module dari `index.html`; browser tanpa module/WebGL akan mengabaikannya tanpa error.
+
+three.js dipaketkan lokal di `assets/js/vendor/` (MIT, lihat `THREE-LICENSE.txt`) supaya tidak
+ada permintaan ke CDN saat halaman dibuka. Ukurannya ~750 KB mentah, ~190 KB setelah gzip.
+
+Gambar kartu dibuat dari foto profil: `card-front.png`, `card-back.png`, dan `lanyard-band.png`
+di `assets/img/`. Ganti ketiganya bila identitas berubah.
+
+Karena memakai ES module, halaman harus dibuka lewat HTTP — bukan `file://`. Untuk mencoba
+lokal: `python3 -m http.server 8000` lalu buka `http://127.0.0.1:8000`.
 
 ## Domain
 Sebelum deploy, ganti `GANTI-DOMAIN.vercel.app` di `index.html`, `robots.txt`, `sitemap.xml`,

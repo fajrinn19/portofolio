@@ -2,7 +2,6 @@
    Portfolio design system — "Aurora" (violet / glass)
    Dark-first, with a light theme. Vanilla CSS, no build.
    ========================================================= */
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap');
 
 :root {
   --violet: #8b5cf6;
@@ -198,6 +197,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .tagline { font-size: clamp(1rem, 2.4vw, 1.18rem); color: var(--ink-2); max-width: 36rem; }
 .hero-meta { display: flex; flex-wrap: wrap; gap: .6rem 1.4rem; margin-top: 1.5rem; color: var(--muted); font-size: .9rem; }
 .hero-meta span { display: inline-flex; align-items: center; gap: .45rem; }
+.hero-meta svg, .contact-list svg, .cert svg { flex: none; }
 
 /* Portrait — cut-out photo on a glowing blob */
 .portrait { position: relative; display: grid; place-items: center; }
@@ -215,7 +215,8 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* when a cut-out PNG is used, show it free-standing without the frame box */
 .portrait.cutout .portrait-frame { background: none; border: 0; box-shadow: none; backdrop-filter: none; border-radius: 0; overflow: visible; }
 .portrait-frame img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
-.portrait.cutout .portrait-frame img { object-fit: contain; filter: drop-shadow(0 26px 50px rgb(0 0 0 / 45%)); }
+.portrait.cutout .portrait-frame img { object-fit: contain; object-position: bottom; filter: drop-shadow(0 30px 55px rgb(var(--glow) / 35%)) drop-shadow(0 12px 24px rgb(0 0 0 / 40%)); }
+:root[data-theme='light'] .portrait.cutout .portrait-frame img { filter: drop-shadow(0 30px 50px rgb(109 40 217 / 28%)); }
 .initials { font-family: var(--font-head); font-size: clamp(3rem, 9vw, 5rem); font-weight: 700; color: var(--accent); letter-spacing: -.04em; }
 
 .portrait-chip {
@@ -250,6 +251,8 @@ ul { margin: 0; padding: 0; list-style: none; }
   display: grid; place-items: center; border: 1px solid var(--line-strong);
 }
 .about-photo img { width: 100%; height: 100%; object-fit: cover; }
+/* foto cut-out: tampilkan utuh dan duduk di dasar kotak, bukan dipotong */
+.about-photo.cutout img { object-fit: contain; object-position: bottom; }
 
 .panel-grid {
   display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
@@ -265,6 +268,11 @@ ul { margin: 0; padding: 0; list-style: none; }
 .panel .row { display: flex; gap: .8rem; align-items: baseline; padding: .4rem 0; font-size: .92rem; color: var(--ink-2); }
 .panel .row b { font-weight: 600; color: var(--ink); }
 .panel .row .when { margin-left: auto; font-family: var(--font-mono); font-size: .72rem; color: var(--muted); white-space: nowrap; }
+.panel .row b { flex: none; min-width: 5.5rem; }
+.panel .row span { min-width: 0; overflow-wrap: anywhere; }
+.panel .row a:hover { color: var(--accent); }
+/* jumlah panel ganjil: panel terakhir melebar penuh agar grid tidak berlubang */
+.panel-grid > .panel:last-child:nth-child(odd) { grid-column: 1 / -1; }
 
 /* tool tiles (Figma / VS Code / Lightroom / Word / Excel / PowerPoint) */
 .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(58px, 1fr)); gap: .6rem; }
@@ -292,6 +300,8 @@ ul { margin: 0; padding: 0; list-style: none; }
   background: linear-gradient(90deg, var(--fuchsia), var(--cyan));
   transition: width 1.1s var(--ease);
 }
+
+.skills-panels { border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; }
 
 .tags { display: flex; flex-wrap: wrap; gap: .45rem; }
 .tag {
@@ -331,14 +341,14 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* generated app mock when there is no screenshot */
 .mock { position: absolute; inset: 0; padding: 15px; display: flex; flex-direction: column; gap: 9px; }
 .mock-bar { display: flex; gap: 5px; align-items: center; }
-.mock-bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--line-strong); display: block; }
+.mock-bar i { width: 8px; height: 8px; border-radius: 50%; background: color-mix(in srgb, var(--ink) 22%, transparent); display: block; }
 .mock-bar em { margin-left: auto; font-style: normal; font-size: .58rem; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; }
 .mock-body { flex: 1; display: grid; grid-template-columns: 36px 1fr; gap: 9px; }
-.mock-side { border-radius: 9px; background: rgb(255 255 255 / 10%); }
+.mock-side { border-radius: 9px; background: color-mix(in srgb, var(--ink) 12%, transparent); }
 .mock-main { display: grid; grid-template-rows: auto 1fr; gap: 9px; }
 .mock-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
-.mock-kpis i { height: 28px; border-radius: 8px; background: rgb(255 255 255 / 9%); display: block; }
-.mock-chart { border-radius: 10px; background: rgb(255 255 255 / 7%); padding: 9px; display: flex; align-items: flex-end; gap: 5px; }
+.mock-kpis i { height: 28px; border-radius: 8px; background: color-mix(in srgb, var(--ink) 10%, transparent); display: block; }
+.mock-chart { border-radius: 10px; background: color-mix(in srgb, var(--ink) 8%, transparent); padding: 9px; display: flex; align-items: flex-end; gap: 5px; }
 .mock-chart i { flex: 1; border-radius: 3px 3px 0 0; background: linear-gradient(var(--fuchsia), rgb(var(--glow) / 25%)); display: block; }
 
 .project-body { padding: 1.3rem; display: flex; flex-direction: column; gap: .75rem; flex: 1; }
@@ -358,6 +368,9 @@ ul { margin: 0; padding: 0; list-style: none; }
   padding: .55rem .85rem; border-radius: 999px; border: 1px solid var(--line); transition: background .2s, border-color .2s;
 }
 .link-btn:hover { background: var(--surface-2); border-color: var(--line-strong); }
+span.link-btn { cursor: pointer; color: var(--accent); border-color: color-mix(in srgb, var(--accent) 40%, transparent); }
+.project:hover span.link-btn { background: rgb(var(--glow) / 16%); }
+.project:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .empty { text-align: center; color: var(--muted); padding: 3rem 0; }
 
 /* ---------------- Detail dialog ---------------- */
@@ -390,6 +403,7 @@ dialog.sheet::backdrop { background: rgb(6 4 14 / 70%); backdrop-filter: blur(5p
 .cert { display: flex; gap: .9rem; align-items: center; padding: 1.05rem; border-radius: var(--r-md); background: var(--surface); border: 1px solid var(--line); backdrop-filter: blur(12px); transition: transform .25s var(--ease), border-color .25s; }
 .cert:hover { transform: translateY(-3px); border-color: var(--line-strong); }
 .cert i { width: 36px; height: 36px; border-radius: 10px; flex: none; display: grid; place-items: center; background: rgb(52 211 153 / 16%); color: var(--mint); font-style: normal; }
+.cert > span { min-width: 0; }
 .cert b { display: block; font-size: .93rem; font-weight: 600; }
 .cert small { color: var(--muted); font-size: .79rem; }
 
@@ -449,4 +463,12 @@ dialog.sheet::backdrop { background: rgb(6 4 14 / 70%); backdrop-filter: blur(5p
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
   .reveal { opacity: 1; transform: none; }
+}
+
+/* ---------------- Print ---------------- */
+@media print {
+  body::before, body::after, .nav, .marquee, .filters, .portrait-glow, dialog.sheet { display: none !important; }
+  body { background: #fff; color: #000; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  .about-card, .contact-wrap, .project, .stat, .cert { box-shadow: none; border-color: #ccc; background: #fff; }
 }

@@ -133,7 +133,6 @@
   $('#hero-role').textContent = d.site.role;
   $('#tagline').textContent = d.site.tagline;
   $('#initials').textContent = initials;
-  $('#about-initials').textContent = initials;
 
   const statusBadge = $('#status-badge');
   if (d.site.availableText || d.site.busyText) {
@@ -156,11 +155,7 @@
   if (d.site.profilePhoto) {
     const alt = `Foto ${d.site.name}`;
     $('#portrait-frame').innerHTML = `<img src="${esc(d.site.profilePhoto)}" alt="${esc(alt)}" width="800" height="1000" fetchpriority="high">`;
-    $('#about-photo').innerHTML = `<img src="${esc(d.site.profilePhoto)}" alt="${esc(alt)}" width="600" height="600" loading="lazy">`;
-    if (d.site.photoCutout) {
-      $('#portrait').classList.add('cutout');
-      $('#about-photo').classList.add('cutout');
-    }
+    if (d.site.photoCutout) $('#portrait').classList.add('cutout');
   }
 
   if (d.highlight) {

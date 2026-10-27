@@ -162,12 +162,11 @@
         <h2 data-i18n="projects.title">Proyek yang pernah dibuat.</h2>
         <p data-i18n="projects.sub">Klik salah satu kartu untuk melihat detail, fitur utama, dan tautannya.</p>
       </div>
-      <!-- Galeri melengkung: tampilan tiap aplikasi, bisa digeser dan diklik untuk diperbesar. -->
+      <div class="filters" id="filters" role="group" data-i18n-label="projects.filterLabel" aria-label="Filter kategori proyek"></div>
+
+      <!-- Galeri melengkung: satu-satunya daftar proyek. Klik kartu untuk membuka rinciannya. -->
       <div class="gallery-stage reveal" id="gallery" data-i18n-label="gallery.label" aria-label="Galeri tampilan aplikasi"></div>
       <p class="gallery-note" id="gallery-note" hidden></p>
-
-      <div class="filters" id="filters" role="group" aria-label="Filter kategori proyek"></div>
-      <div class="project-grid" id="project-grid"></div>
       <p class="empty" id="empty" hidden data-i18n="projects.empty">Tidak ada proyek pada kategori ini.</p>
     </section>
 
@@ -319,13 +318,17 @@
 
       const L = () => document.documentElement.lang === 'en' ? 'en' : 'id';
       const v = x => (x && typeof x === 'object' && 'id' in x) ? (x[L()] ?? x.id) : x;
-      const buildItems = () => data.projects.map(p => ({
-        image: p.screenshot || placeholder(p),
-        text: v(p.title),
-        description: String(v(p.description)).startsWith('[ISI]') ? '' : v(p.description),
-        alt: v(p.title)
-      }));
-      const items = buildItems();
+      const buildItems = () => data.projects
+        .map((p, i) => ({ p, i }))
+        .filter(({ p }) => !window.portfolioUI || window.portfolioUI.matches(p))
+        .map(({ p, i }) => ({
+          image: p.screenshot || placeholder(p),
+          text: v(p.title),
+          description: String(v(p.description)).startsWith('[ISI]') ? '' : v(p.description),
+          alt: v(p.title),
+          projectIndex: i
+        }));
+      let items = buildItems();
 
       const ink = () => getComputedStyle(document.documentElement).getPropertyValue('--ink').trim() || '#ffffff';
 
@@ -346,10 +349,10 @@
         snap: true,
         grayscale: false,
         showTitles: true,
-        openOnClick: true,
+        openOnClick: false,
         intro: true,
         font: 'bold 30px Sora',
-        onItemClick: (item, index) => { stage.dataset.last = String(index); }
+        onItemClick: (item) => window.portfolioUI?.openProject(item.projectIndex)
       });
 
       if (gallery) {
@@ -360,10 +363,18 @@
         // Warna judul mengikuti tema terang/gelap.
         new MutationObserver(() => gallery.update({ textColor: ink() }))
           .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-accent'] });
+        const refresh = () => {
+          items = buildItems();
+          const empty = document.getElementById('empty');
+          empty.hidden = items.length > 0;
+          stage.hidden = items.length === 0;
+          if (items.length) gallery.update({ items });
+        };
         document.addEventListener('langchange', () => {
           note.textContent = T()['gallery.hint'];
-          gallery.update({ items: buildItems() });
+          refresh();
         });
+        document.addEventListener('filterchange', refresh);
       } else {
         stage.remove();
       }

@@ -22,6 +22,9 @@
 
   /* Teks konten: t({id,en}) -> string bahasa aktif. String biasa dibiarkan apa adanya. */
   const tx = (v) => (v && typeof v === 'object' && 'id' in v) ? (v[lang] ?? v.id) : (v ?? '');
+  /* Nilai yang masih placeholder [ISI] tidak ditampilkan ke pengunjung. */
+  const filled = (v) => { const out = tx(v); return String(out).includes('[ISI]') ? '' : out; };
+  const waNumber = filled(d.site.whatsapp);
   /* Teks antarmuka berdasarkan kunci, dengan pengganti {nama}. */
   const ui = (key, vars) => {
     let out = STRINGS[lang]?.[key] ?? STRINGS.id?.[key] ?? key;
@@ -250,7 +253,7 @@
     $('#about-panels').innerHTML = [
       panel(ui('panel.contact'), ui('panel.contact.chip'), rows([
         [ui('row.email'), d.site.email, '', `mailto:${d.site.email}`],
-        [ui('row.whatsapp'), `+${d.site.whatsapp}`, '', `https://wa.me/${d.site.whatsapp}`],
+        ...(waNumber ? [[ui('row.whatsapp'), `+${waNumber}`, '', `https://wa.me/${waNumber}`]] : []),
         ...(d.site.linkedin ? [[ui('row.linkedin'), ui('row.profile'), '', d.site.linkedin]] : []),
         [ui('row.location'), tx(d.site.location), d.site.timezone || '']
       ])),
@@ -261,7 +264,7 @@
       panel(ui('panel.skillset'), ui('item.count', { n: (d.skillSet || []).length }), tagList(d.skillSet)),
       panel(ui('panel.interest'), ui('panel.interest.chip'), tagList(d.interests)),
       panel(ui('panel.language'), ui('panel.language.chip'),
-            rows((d.languages || []).map((l) => [tx(l.name), tx(l.level) || ''])))
+            rows((d.languages || []).map((l) => [tx(l.name), filled(l.level)])))
     ].join('');
   };
 
@@ -283,45 +286,6 @@
   };
 
   /* ---------------- Proyek ---------------- */
-  // Mock UI dipakai sebagai pengganti screenshot agar kartu tidak kosong.
-  const mock = () => `
-    <div class="mock" aria-hidden="true">
-      <div class="mock-bar"><i></i><i></i><i></i><em>preview</em></div>
-      <div class="mock-body">
-        <div class="mock-side"></div>
-        <div class="mock-main">
-          <div class="mock-kpis"><i></i><i></i><i></i></div>
-          <div class="mock-chart">${'<i style="height:__%"></i>'.repeat(7)}</div>
-        </div>
-      </div>
-    </div>`.replace(/__/g, () => 30 + Math.round(Math.random() * 65));
-
-  const shot = (p) => p.screenshot
-    ? `<img src="${esc(p.screenshot)}" alt="${esc(ui('shot.alt', { title: tx(p.title) }))}" width="1200" height="750" loading="lazy" decoding="async">`
-    : mock();
-
-  const paintProjects = () => {
-    $('#project-grid').innerHTML = d.projects.map((p, i) => `
-    <article class="project reveal${p.featured ? ' is-feature' : ''}" data-index="${i}" data-category="${esc(p.category.id ?? p.category)}"
-             tabindex="0" role="button" aria-label="${esc(ui('projects.open', { title: tx(p.title) }))}">
-      <div class="shot">${shot(p)}</div>
-      <div class="project-body">
-        <div class="project-top">
-          <h3>${esc(tx(p.title))}</h3>
-          <span class="pill">${esc(tx(p.category))}</span>
-        </div>
-        <p>${esc(tx(p.description))}</p>
-        ${p.metrics?.length ? `<div class="metrics">${p.metrics.map((m) => `<div><b>${esc(m.value)}</b>${esc(tx(m.label))}</div>`).join('')}</div>` : ''}
-        ${tagList(p.tech)}
-        <div class="project-foot">
-          <span class="link-btn">${esc(ui('projects.detail'))} ${ICON.arrow}</span>
-          ${p.demo ? `<a class="link-btn" href="${esc(p.demo)}" target="_blank" rel="noopener" data-stop>Demo</a>` : ''}
-          ${p.repo ? `<a class="link-btn" href="${esc(p.repo)}" target="_blank" rel="noopener" data-stop>GitHub</a>` : ''}
-        </div>
-      </div>
-    </article>`).join('');
-  };
-
   /* Filter kategori */
   const ALL = '__all__';
   const catKey = (c) => c?.id ?? c;
@@ -333,13 +297,13 @@
       .map(([key, label]) => `<button type="button" class="filter" aria-pressed="${key === active}" data-filter="${esc(key)}">${esc(label)}</button>`).join('');
   };
 
+  const matches = (p) => currentFilter === ALL || catKey(p.category) === currentFilter;
+
   function applyFilter(value, updateHash = true) {
     const v = cats.some(([k]) => k === value) ? value : ALL;
     currentFilter = v;
     $$('#filters .filter').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === v)));
-    $$('.project').forEach((card) => { card.hidden = v !== ALL && card.dataset.category !== v; });
-    $('#empty').hidden = $$('.project:not([hidden])').length > 0;
-    $('#empty').textContent = ui('projects.empty');
+    document.dispatchEvent(new CustomEvent('filterchange', { detail: { filter: v } }));
     if (updateHash) {
       const hash = v === ALL ? '#projects' : `#projects?kategori=${encodeURIComponent(v)}`;
       history.replaceState(null, '', location.pathname + hash);
@@ -360,13 +324,14 @@
   const openSheet = (i) => {
     const p = d.projects[i];
     if (!p) return;
-    $('#sheet-category').textContent = [tx(p.category), p.year, tx(p.role)].filter(Boolean).join(' · ');
+    $('#sheet-category').textContent = [filled(p.category), filled(p.year), filled(p.role)].filter(Boolean).join(' · ');
     $('#sheet-title').textContent = tx(p.title);
     $('#sheet-body').innerHTML = `
-      <p class="muted">${esc(tx(p.description))}</p>
-      ${p.features?.length ? `<div><h4>${esc(ui('sheet.features'))}</h4><ul class="feature-list">${p.features.map((f) => `<li>${esc(tx(f))}</li>`).join('')}</ul></div>` : ''}
+      ${p.screenshot ? `<img class="sheet-shot" src="${esc(p.screenshot)}" alt="${esc(ui('shot.alt', { title: tx(p.title) }))}" loading="lazy">` : ''}
+      <p class="muted">${esc(filled(p.description))}</p>
+      ${(p.features || []).some(filled) ? `<div><h4>${esc(ui('sheet.features'))}</h4><ul class="feature-list">${p.features.filter(filled).map((f) => `<li>${esc(tx(f))}</li>`).join('')}</ul></div>` : ''}
       ${p.metrics?.length ? `<div><h4>${esc(ui('sheet.results'))}</h4><div class="metrics">${p.metrics.map((m) => `<div><b>${esc(m.value)}</b>${esc(tx(m.label))}</div>`).join('')}</div></div>` : ''}
-      <div><h4>${esc(ui('sheet.tech'))}</h4>${tagList(p.tech)}</div>
+      ${p.tech.some(filled) ? `<div><h4>${esc(ui('sheet.tech'))}</h4>${tagList(p.tech.filter(filled))}</div>` : ''}
       <div class="actions" style="margin-top:.2rem">
         ${p.demo ? `<a class="button" href="${esc(p.demo)}" target="_blank" rel="noopener">${ICON.link}${esc(ui('sheet.demo'))}</a>` : ''}
         ${p.repo ? `<a class="button alt" href="${esc(p.repo)}" target="_blank" rel="noopener">${esc(ui('sheet.code'))}</a>` : ''}
@@ -375,19 +340,8 @@
     $('#sheet-close').focus();
   };
 
-  const grid = $('#project-grid');
-  grid.addEventListener('click', (e) => {
-    if (e.target.closest('[data-stop]')) return;      // biarkan tautan demo/GitHub bekerja
-    const card = e.target.closest('.project');
-    if (card) openSheet(+card.dataset.index);
-  });
-  grid.addEventListener('keydown', (e) => {
-    if (e.key !== 'Enter' && e.key !== ' ') return;
-    const card = e.target.closest('.project');
-    if (!card || e.target.closest('[data-stop]')) return;
-    e.preventDefault();
-    openSheet(+card.dataset.index);
-  });
+  window.portfolioUI = { openProject: openSheet, matches };
+
   $('#sheet-close').addEventListener('click', () => sheet.close());
   sheet.addEventListener('click', (e) => { if (e.target === sheet) sheet.close(); });
 
@@ -399,7 +353,7 @@
       <h3>${esc(tx(x.position))}</h3>
       <p class="where">${esc(tx(x.place))}</p>
       <p class="when">${esc(tx(x.period))}</p>
-      <ul>${(x.points || []).map((p) => `<li>${esc(tx(p))}</li>`).join('')}</ul>
+      <ul>${(x.points || []).filter(filled).map((p) => `<li>${esc(tx(p))}</li>`).join('')}</ul>
     </div>`).join('');
 
   const paintJourney = () => {
@@ -420,11 +374,12 @@
 
   /* ---------------- Kontak ---------------- */
   $('#email-link').href = `mailto:${d.site.email}`;
-  $('#wa-link').href = `https://wa.me/${d.site.whatsapp}`;
+  if (waNumber) $('#wa-link').href = `https://wa.me/${waNumber}`;
+  else $('#wa-link').hidden = true;
 
   const contactRows = () => [
     [ICON.mail, ui('row.email'), d.site.email, `mailto:${d.site.email}`],
-    [ICON.chat, ui('row.whatsapp'), `+${d.site.whatsapp}`, `https://wa.me/${d.site.whatsapp}`],
+    ...(waNumber ? [[ICON.chat, ui('row.whatsapp'), `+${waNumber}`, `https://wa.me/${waNumber}`]] : []),
     [ICON.link, ui('row.linkedin'), ui('row.profile'), d.site.linkedin],
     [ICON.link, ui('row.github'), ui('row.repo'), d.site.github]
   ].filter((r) => r[3]);
@@ -506,7 +461,7 @@
   };
 
   const RENDER = [paintTitle, paintNav, paintHero, paintMeta, paintAbout, paintPanels, paintStats,
-                  paintSkills, paintProjects, paintJourney, paintCerts, paintContact,
+                  paintSkills, paintJourney, paintCerts, paintContact,
                   paintStatic, paintLangBtn];
 
   const renderAll = () => {

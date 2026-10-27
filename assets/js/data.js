@@ -151,7 +151,7 @@ const portfolioData = {
         t('Label roast bean 80x100 mm siap cetak berisi varietas, proses, asal, berat, kurva, dan catatan first crack serta drop.',
           'A print-ready 80x100 mm roast bean label with variety, process, origin, weight, curve, and first crack and drop notes.')
       ],
-      demo: '', repo: '', screenshot: ''
+      demo: '', repo: '', screenshot: 'assets/img/roasting.webp'
     },
     {
       title: 'SCA Cupping',
